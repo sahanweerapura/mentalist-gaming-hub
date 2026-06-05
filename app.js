@@ -18,10 +18,10 @@ const lang = {
         txtChatLockTitle: "PRIVATE ROOM", txtChatLockSub: "Enter password to join.", btnVerifyChat: "JOIN", btnCancelPass: "CANCEL",
         chatDefHeader: "Select a room to join the conversation.", btnSendChat: "SEND",
         txtRoomChatTitle: "ROOM CHAT", roomChatPH: "Message...",
-        t1Label: "TEAM 1", t2Label: "TEAM 2", txtKata: "Tricks", txtTrumpBadge: "TRUMP", lblPart: "Team 1", lblT2: "Team 2", roleDealer: "(DEALER)",
+        t1Label: "TEAM A", t2Label: "TEAM B", txtKata: "Tricks", txtTrumpBadge: "TRUMP", lblPart: "Team A", lblT2: "Team B", roleDealer: "(DEALER)",
         statusWait: "Awaiting Players...", statusShuffle: "Shuffling deck...", statusCut: " is cutting...", myCutPrompt: "Your turn to Cut or Decline.", btnCut: "CUT DECK", btnDecline: "DECLINE",
         statusDeal: "Dealing Phase 1...", statusTrump: "Select Trump Suit", trumpTitle: "SELECT TRUMP", botTrumpPrompt: " is selecting Trump...", statusDeal2: "Dealing Phase 2...", statusPlay: "YOUR TURN! PLAY A CARD.", botThink: " is calculating...",
-        t1Win: "TEAM 1 SECURES TRICK!", t2Win: "TEAM 2 SECURES TRICK!", gameOver: "MATCH TERMINATED", celebTokens: "TOKENS EARNED!", celebWinRnd: " secured the round!", btnCont: "CONTINUE",
+        t1Win: "TEAM A SECURES TRICK!", t2Win: "TEAM B SECURES TRICK!", gameOver: "MATCH TERMINATED", celebTokens: "TOKENS EARNED!", celebWinRnd: " secured the round!", btnCont: "CONTINUE",
         celebChamp: "🏆 MATCH CHAMPIONS 🏆", celebWinGame: "ABSOLUTE VICTORY FOR ", btnAgain: "PLAY AGAIN", celebSeporu: "SEPORU! (TIE)", celebSeporuSub: "No tokens awarded. Next round is worth +1 Bonus Token!", celebDblSeporu: "SEPORU CANCELLED!", celebDblSeporuSub: "Double Tie! The bonus token has been cancelled.",
         tttYourTurn: "Your Turn! (X)", tttBotTurn: "Bot is thinking... (O)", tttWinX: "YOU WIN!", tttWinO: "BOT WINS!", tttDraw: "IT'S A DRAW!", txtCrushScore: "MATCH SCORE", txtCrushMoves: "MOVES", txtCrushLvl: "LEVEL"
     },
@@ -44,10 +44,10 @@ const lang = {
         txtChatLockTitle: "රහස්‍ය කාමරය", txtChatLockSub: "මුරපදය ඇතුලත් කරන්න.", btnVerifyChat: "එක්වන්න", btnCancelPass: "අවලංගු කරන්න",
         chatDefHeader: "කතාබස් කිරීමට කාමරයක් තෝරන්න.", btnSendChat: "යවන්න",
         txtRoomChatTitle: "කාමරයේ කතාබස්", roomChatPH: "පණිවිඩය...",
-        t1Label: "කණ්ඩායම 1", t2Label: "කණ්ඩායම 2", txtKata: "අත්", txtTrumpBadge: "තුරුම්පුව", lblPart: "කණ්ඩායම 1", lblT2: "කණ්ඩායම 2", roleDealer: "(බෙදන්නා)",
+        t1Label: "කණ්ඩායම A", t2Label: "කණ්ඩායම B", txtKata: "අත්", txtTrumpBadge: "තුරුම්පුව", lblPart: "කණ්ඩායම A", lblT2: "කණ්ඩායම B", roleDealer: "(බෙදන්නා)",
         statusWait: "රැඳී සිටින්න...", statusShuffle: "කාඩ්පත් කලවම් කරමින්...", statusCut: " කුට්ටිය කපමින්...", myCutPrompt: "ඔබේ වාරය: කපන්න හෝ ප්‍රතික්ෂේප කරන්න.", btnCut: "කපන්න", btnDecline: "එපා",
         statusDeal: "පළමු අදියර බෙදමින්...", statusTrump: "තුරුම්පුව තෝරන්න", trumpTitle: "තුරුම්පුව කුමක්ද?", botTrumpPrompt: " තුරුම්පුව තෝරමින්...", statusDeal2: "දෙවන අදියර බෙදමින්...", statusPlay: "ඔබේ වාරය! කාඩ්පතක් දමන්න.", botThink: " සිතමින් සිටී...",
-        t1Win: "කණ්ඩායම 1 වටය දිනුවා!", t2Win: "කණ්ඩායම 2 වටය දිනුවා!", gameOver: "තරගය අවසන්", celebTokens: "අඩෝ උඹල කැටකොල දින්නා...!!", celebWinRnd: " මෙම වටය ජයගත්තා!", btnCont: "ඉදිරියට",
+        t1Win: "කණ්ඩායම A වටය දිනුවා!", t2Win: "කණ්ඩායම B වටය දිනුවා!", gameOver: "තරගය අවසන්", celebTokens: "අඩෝ උඹල කැටකොල දින්නා...!!", celebWinRnd: " මෙම වටය ජයගත්තා!", btnCont: "ඉදිරියට",
         celebChamp: "🏆 තරගයේ ශූරයින් 🏆", celebWinGame: "විශිෂ්ට ජයග්‍රහණයක්! දිනුවේ ", btnAgain: "නැවත ක්‍රීඩා කරන්න", celebSeporu: "සෙපෝරුයි!", celebSeporuSub: "කිසිවෙකුට කැටකොල නැත. ඊළඟ වටයට අමතර +1 එකතු වේ!", celebDblSeporu: "සෙපෝරුට සෙපෝරු කැපුණා!", celebDblSeporuSub: "දිගටම සෙපෝරුයි! අමතර කැටකොලය අවලංගු විය.",
         tttYourTurn: "ඔබේ වාරය! (X)", tttBotTurn: "පරිගණකය සිතමින්... (O)", tttWinX: "ඔබ දිනුවා!", tttWinO: "පරිගණකය දිනුවා!", tttDraw: "තරගය සමයි!", txtCrushScore: "ලකුණු", txtCrushMoves: "වාර ගණන", txtCrushLvl: "මට්ටම"
     }
@@ -148,9 +148,21 @@ window.joinRoom = function() {
     db.ref("rooms/" + code).once("value", snap => {
         if(snap.exists()) {
             let roomData = snap.val();
+            
+            // STRICT DUPLICATE CHECK
+            if (roomData.players.includes(botNames.p1)) {
+                alert("This Alias is already taken in that room! Please change your Alias in the code or use a different name.");
+                return; 
+            }
+
             if(roomData.players.length < roomData.maxPlayers && roomData.status === "waiting") {
                 isHost = false; currentRoomCode = code; selectedGame = roomData.game; currentLobbyMax = roomData.maxPlayers;
-                roomData.players.push(botNames.p1); db.ref("rooms/" + code + "/players").set(roomData.players); 
+                
+                if (!roomData.players.includes(botNames.p1)) {
+                    roomData.players.push(botNames.p1); 
+                    db.ref("rooms/" + code + "/players").set(roomData.players); 
+                }
+                
                 document.getElementById('room-modal').style.display = 'none'; let l = lang[currentLang];
                 document.getElementById('waitingTitle').innerText = l.waitingTitleJoin; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingSub').innerText = l.waitingSubJoin; document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "සම්බන්ධ විය. Host ආරම්භ කරන තෙක් රැඳී සිටින්න." : "Connected. Waiting for Host to start.";
                 document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('waiting-modal').style.display = 'flex'; openRoomChat(code); listenToFirebaseRoom(code);
@@ -164,12 +176,17 @@ function listenToFirebaseRoom(code) {
         let data = snap.val(); if(!data) return; 
         document.getElementById('queueMax').innerText = data.maxPlayers; document.getElementById('queueCount').innerText = data.players.length;
         const qList = document.getElementById('waitingPlayerList'); qList.innerHTML = '';
+        
+        let displayCount = 0;
         data.players.forEach((p, idx) => {
+            if(displayCount >= data.maxPlayers) return; 
             let icon = idx === 0 ? "👑" : "🎮"; let meTxt = p === botNames.p1 ? " (You)" : ""; qList.innerHTML += `<div class="queue-item"><div class="queue-avatar">${icon}</div> ${p}${meTxt}</div>`;
             if(p === botNames.p1) { myIndex = idx; mySeat = 'p1'; }
+            displayCount++;
         });
+        
         if(selectedGame === 'omi') { data.players.forEach((p, idx) => { let localId = turnOrder[(4 + idx - myIndex) % 4]; botNames[localId] = p; if(localId !== 'p1') document.getElementById(localId + '-name').innerText = p; }); }
-        for(let i=data.players.length; i<data.maxPlayers; i++) { qList.innerHTML += `<div class="queue-item empty">Waiting for player...</div>`; }
+        for(let i=displayCount; i<data.maxPlayers; i++) { qList.innerHTML += `<div class="queue-item empty">Waiting for player...</div>`; }
         
         let minPlayers = (selectedGame === 'shooter') ? 4 : data.maxPlayers;
         if(isHost) {
@@ -195,7 +212,22 @@ function startMultiplayerGameClient() {
     else if (selectedGame === 'shooter') { document.getElementById('shooter-screen').style.display = 'block'; initShooter(); syncShooterFirebase(); }
 }
 
-window.closeWaitingModal = function() { if(currentRoomCode) { if(isHost) db.ref("rooms/" + currentRoomCode).remove(); db.ref("rooms/" + currentRoomCode).off(); } document.getElementById('waiting-modal').style.display = 'none'; document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('room-chat-sidebar').style.display = 'none'; };
+window.closeWaitingModal = function() { 
+    if(currentRoomCode) { 
+        if(isHost) {
+            db.ref("rooms/" + currentRoomCode).remove(); 
+        } else {
+            db.ref("rooms/" + currentRoomCode + "/players").once("value", snap => {
+                if(snap.exists()) {
+                    let cleanedArr = snap.val().filter(n => n !== botNames.p1);
+                    db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr);
+                }
+            });
+        }
+        db.ref("rooms/" + currentRoomCode).off(); 
+    } 
+    document.getElementById('waiting-modal').style.display = 'none'; document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('room-chat-sidebar').style.display = 'none'; 
+};
 
 window.quitToLobby = function() { 
     isGameOver = true; team1Kola = 0; team2Kola = 0; activeSeporu = 0; tttActive = false; shooterActive = false; 
@@ -203,8 +235,16 @@ window.quitToLobby = function() {
     if(currentRoomCode) { 
         if(isHost) {
             db.ref("rooms/" + currentRoomCode).remove(); 
-        } else if (selectedGame === 'shooter') {
-            db.ref("rooms/" + currentRoomCode + "/shooterState/" + botNames.p1).remove();
+        } else {
+            db.ref("rooms/" + currentRoomCode + "/players").once("value", snap => {
+                if(snap.exists()) {
+                    let cleanedArr = snap.val().filter(n => n !== botNames.p1);
+                    db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr);
+                }
+            });
+            if (selectedGame === 'shooter') {
+                db.ref("rooms/" + currentRoomCode + "/shooterState/" + botNames.p1).remove();
+            }
         }
         db.ref("rooms/" + currentRoomCode).off(); 
     } 
@@ -220,10 +260,12 @@ window.sendRoomMessage = function() { const input = document.getElementById('roo
 
 // --- NEON BLASTER ARENA (SHOOTER) DEATHMATCH ---
 let shooterActive = false; let sCanvas, sCtx; let localShooter = { x: 400, y: 250, hp: 100, dead: false, color: '#33b5e5' }; let remoteShooters = {}; let sBullets = []; let sKeys = {}; let mx = 400, my = 250; let lastShot = 0; let shooterKills = {};
+const pColors = ['#ff3366', '#33b5e5', '#00ff00', '#ffd700', '#cc66ff', '#ff8800'];
 
 function initShooter() {
     shooterActive = true; sCanvas = document.getElementById('shooterCanvas'); sCtx = sCanvas.getContext('2d');
-    localShooter = { x: 100 + Math.random() * 600, y: 100 + Math.random() * 300, hp: 100, dead: false, color: isHost ? '#ff3366' : '#33b5e5' }; sBullets = []; remoteShooters = {}; shooterKills = {};
+    localShooter = { x: 100 + Math.random() * 600, y: 100 + Math.random() * 300, hp: 100, dead: false, color: pColors[myIndex % 6] }; 
+    sBullets = []; remoteShooters = {}; shooterKills = {};
     document.getElementById('mainHealthBar').style.width = "100%"; document.getElementById('mainHealthText').innerText = "100%";
     
     window.addEventListener('keydown', e => sKeys[e.key.toLowerCase()] = true); window.addEventListener('keyup', e => sKeys[e.key.toLowerCase()] = false);
@@ -236,10 +278,7 @@ function initShooter() {
         sBullets.push(b); if(isMultiplayer && currentRoomCode) db.ref("rooms/"+currentRoomCode+"/bullets").push(b);
     });
     
-    if(isMultiplayer && currentRoomCode) { 
-        if(isHost) db.ref("rooms/"+currentRoomCode+"/shooterKills").set({}); 
-        db.ref("rooms/"+currentRoomCode+"/shooterState/"+botNames.p1).onDisconnect().remove(); 
-    }
+    if(isMultiplayer && isHost && currentRoomCode) { db.ref("rooms/"+currentRoomCode+"/shooterKills").set({}); }
     requestAnimationFrame(shooterLoop);
 }
 
@@ -283,18 +322,24 @@ function shooterLoop() {
         if(sKeys['w']) localShooter.y -= 4; if(sKeys['s']) localShooter.y += 4; if(sKeys['a']) localShooter.x -= 4; if(sKeys['d']) localShooter.x += 4;
         localShooter.x = Math.max(15, Math.min(785, localShooter.x)); localShooter.y = Math.max(15, Math.min(485, localShooter.y));
     }
+    
     sCtx.clearRect(0,0,800,500);
+    
+    // Draw Grid
     sCtx.strokeStyle = "rgba(51, 181, 229, 0.1)"; sCtx.lineWidth = 1;
     for(let i=0; i<800; i+=50) { sCtx.beginPath(); sCtx.moveTo(i,0); sCtx.lineTo(i,500); sCtx.stroke(); sCtx.beginPath(); sCtx.moveTo(0,i); sCtx.lineTo(800,i); sCtx.stroke(); }
     
+    // Draw Players
     for(let p in remoteShooters) { let r = remoteShooters[p]; if(!r.dead && r.hp > 0) drawShooter(r.x, r.y, r.color, p, r.hp); }
     if(!localShooter.dead) drawShooter(localShooter.x, localShooter.y, localShooter.color, "YOU", localShooter.hp);
     
+    // Process Bullets
     for(let i=sBullets.length-1; i>=0; i--) {
         let b = sBullets[i]; b.x += b.vx; b.y += b.vy;
         sCtx.fillStyle = "#ffd700"; sCtx.beginPath(); sCtx.arc(b.x, b.y, 4, 0, Math.PI*2); sCtx.fill();
         if(b.x < 0 || b.x > 800 || b.y < 0 || b.y > 500) { sBullets.splice(i,1); continue; }
         
+        // Hit check
         if(b.owner !== botNames.p1 && !localShooter.dead && Math.hypot(b.x - localShooter.x, b.y - localShooter.y) < 20) {
             localShooter.hp -= 20; 
             document.getElementById('mainHealthBar').style.width = Math.max(0, localShooter.hp) + "%";
@@ -316,6 +361,15 @@ function shooterLoop() {
             sBullets.splice(i,1);
         }
     }
+
+    // Death Screen
+    if(localShooter.dead) {
+        sCtx.fillStyle = "rgba(255, 0, 0, 0.3)";
+        sCtx.fillRect(0,0,800,500);
+        sCtx.fillStyle = "#fff"; sCtx.font = "bold 30px Rajdhani"; sCtx.textAlign = "center";
+        sCtx.fillText("SYSTEM FAILURE - REBOOTING...", 400, 250);
+    }
+
     requestAnimationFrame(shooterLoop);
 }
 
@@ -508,11 +562,48 @@ function updateActiveTurnUI(activeId) { ['p1', 'p2', 'p3', 'p4'].forEach(p => do
 
 function triggerCelebration(type, winningTeam, tokensEarned = 0) { 
     updateActiveTurnUI(null); const overlay = document.getElementById('celebration-overlay'); const title = document.getElementById('celebration-title'); const subtitle = document.getElementById('celebration-subtitle'); const gif = document.getElementById('celebration-gif'); const btn = document.getElementById('celeb-btn'); let teamNameStr = winningTeam === 1 ? lang[currentLang].lblPart : lang[currentLang].lblT2; overlay.style.display = 'flex'; 
-    if (type !== 'seporu' && type !== 'double_seporu') generateFireworks(); else document.getElementById('fireworks-container').innerHTML = ''; 
-    if (type === 'round') { let tokenUnit = currentLang === 'si' ? " කැටකොල)" : " Tokens)"; title.innerText = lang[currentLang].celebTokens; subtitle.innerText = teamNameStr + lang[currentLang].celebWinRnd + tokensEarned + tokenUnit; btn.innerText = lang[currentLang].btnCont; const roundGifs = ["https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif", "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif"]; gif.src = roundGifs[Math.floor(Math.random() * roundGifs.length)]; } 
-    else if (type === 'game') { title.innerText = lang[currentLang].celebChamp; subtitle.innerText = lang[currentLang].celebWinGame + teamNameStr + "!"; btn.innerText = lang[currentLang].btnAgain; gif.src = "https://media.giphy.com/media/cnuNz0fTBIUGnx4F9T/giphy.gif"; } 
-    else if (type === 'seporu') { title.innerText = lang[currentLang].celebSeporu; subtitle.innerText = lang[currentLang].celebSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; } 
-    else if (type === 'double_seporu') { title.innerText = lang[currentLang].celebDblSeporu; subtitle.innerText = lang[currentLang].celebDblSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; } 
+    
+    let isLocalWin = (winningTeam === 1);
+    
+    if (type !== 'seporu' && type !== 'double_seporu') {
+        if (isLocalWin) generateFireworks(); 
+        else document.getElementById('fireworks-container').innerHTML = ''; 
+    } else {
+        document.getElementById('fireworks-container').innerHTML = ''; 
+    }
+
+    const winGifs = ["https://media0.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif", "https://media3.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif"];
+    const loseGifs = ["https://media2.giphy.com/media/10tIjpzIu8fe0/giphy.gif", "https://media1.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"];
+    
+    if (type === 'round') { 
+        let tokenUnit = currentLang === 'si' ? " කැටකොල)" : " Tokens)"; 
+        title.innerText = isLocalWin ? (currentLang === 'si' ? "වටය දිනුවා!" : "ROUND WON!") : (currentLang === 'si' ? "වටය පරාදයි..." : "ROUND LOST...");
+        title.style.color = isLocalWin ? "#ffd700" : "#ff3366";
+        subtitle.innerText = teamNameStr + lang[currentLang].celebWinRnd + tokensEarned + tokenUnit; 
+        btn.innerText = lang[currentLang].btnCont; 
+        gif.src = isLocalWin ? winGifs[Math.floor(Math.random() * winGifs.length)] : loseGifs[Math.floor(Math.random() * loseGifs.length)]; 
+    } 
+    else if (type === 'game') { 
+        title.innerText = isLocalWin ? (currentLang === 'si' ? "විශිෂ්ට ජයග්‍රහණයක්!" : "VICTORY!") : (currentLang === 'si' ? "පරාජයක්!" : "DEFEAT!");
+        title.style.color = isLocalWin ? "#ffd700" : "#ff3366";
+        subtitle.innerText = lang[currentLang].celebWinGame + teamNameStr + "!"; 
+        btn.innerText = lang[currentLang].btnAgain; 
+        gif.src = isLocalWin ? "https://media2.giphy.com/media/cnuNz0fTBIUGnx4F9T/giphy.gif" : "https://media2.giphy.com/media/l41Ywx8mJg0B8A1A4/giphy.gif"; 
+    } 
+    else if (type === 'seporu') { 
+        title.innerText = lang[currentLang].celebSeporu; 
+        title.style.color = "#33b5e5";
+        subtitle.innerText = lang[currentLang].celebSeporuSub; 
+        btn.innerText = lang[currentLang].btnCont; 
+        gif.src = "https://media3.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; 
+    } 
+    else if (type === 'double_seporu') { 
+        title.innerText = lang[currentLang].celebDblSeporu; 
+        title.style.color = "#ff8800";
+        subtitle.innerText = lang[currentLang].celebDblSeporuSub; 
+        btn.innerText = lang[currentLang].btnCont; 
+        gif.src = "https://media1.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; 
+    } 
 
     if(isMultiplayer && !isGameOver) {
         document.getElementById('celeb-btn').style.display = 'none'; 
