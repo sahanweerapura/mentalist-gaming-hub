@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentalist Live | Gaming Hub</title>
     <link rel="stylesheet" href="style.css">
+    <!-- FIREBASE MULTIPLAYER ENGINE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
@@ -16,6 +17,7 @@
         <button id="langToggle" onclick="toggleLanguage()">සිංහල (Sinhala)</button>
     </header>
 
+    <!-- LOGIN SCREEN -->
     <div id="login-screen" class="glass-panel card">
         <h2 id="registerTitle">ENTER THE LOBBY</h2>
         <form id="playerForm">
@@ -26,6 +28,7 @@
         </form>
     </div>
 
+    <!-- GAME LOBBY & CHAT HUB -->
     <div id="lobby-screen" style="display: none; width: 98vw; max-width: 1200px; display: flex; flex-direction: column; gap: 20px;">
         
         <div class="glass-panel card profile-strip" style="width: 100%; max-width: 100%; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;">
@@ -89,6 +92,7 @@
         </div>
     </div>
 
+    <!-- MODALS -->
     <div id="create-chat-modal" class="modal-overlay" style="display: none;">
         <div class="glass-panel card modal-content">
             <h2 id="txtCreateChatTitle" class="neon-blue-text">CREATE CHAT ROOM</h2>
@@ -143,7 +147,7 @@
             <div class="queue-container">
                 <h4 style="color:#aaa; margin-bottom:10px; text-transform:uppercase;" id="txtWaitingPlayers">Players Connected <span id="queueCount">1</span>/<span id="queueMax">4</span></h4>
                 <div id="waitingPlayerList" class="player-queue-list">
-                    </div>
+                </div>
             </div>
 
             <p id="waitingStatus" class="pulse-text" style="margin-top:15px; color:#33b5e5; font-size:1rem; font-weight:bold;">Waiting for players to join...</p>
@@ -154,6 +158,7 @@
 
     <div id="point-popups"></div>
 
+    <!-- SWEET CRUSH SCREEN -->
     <div id="crush-screen" style="display: none;" class="glass-panel card crush-container">
         <button onclick="quitToLobby()" class="action-btn outline small-btn" id="btnQuitCrush" style="position: absolute; top: 15px; left: 15px; z-index: 50;">Exit</button>
         <div class="crush-hud-bar">
@@ -165,6 +170,7 @@
         <div id="crushBoard" class="crush-board"></div>
     </div>
 
+    <!-- TIC-TAC-TOE SCREEN -->
     <div id="ttt-screen" style="display: none;" class="glass-panel card">
         <button onclick="quitToLobby()" class="action-btn outline small-btn" id="btnQuitTTT" style="margin-bottom: 20px;">Exit Game</button>
         <h2 id="tttStatus" class="neon-blue-text">Your Turn! (X)</h2>
@@ -175,11 +181,12 @@
         </div>
     </div>
 
+    <!-- OMI GAME SCREEN -->
     <div id="game-screen" style="display: none;">
         <div id="top-scoreboard" class="glass-panel">
-            <div class="score-card team1-score"><h3 id="t1Label">TEAM 1</h3><p><span id="txtKata1">Tricks</span>: <span id="t1-tricks" class="highlight">0</span> <span class="dim">/ 8</span></p><div class="kola-tracker"><span id="txtKola1">Tokens</span>: <strong id="t1-kola" class="neon-pink-text">0</strong> <span class="dim">|</span> <span id="txtLeft1">Left</span>: <strong id="t1-left">10</strong></div></div>
+            <div class="score-card team1-score"><h3 id="t1Label" class="team-label-ui">TEAM 1</h3><p><span id="txtKata1">Tricks</span>: <span id="t1-tricks" class="highlight">0</span> <span class="dim">/ 8</span></p><div class="kola-tracker"><span id="txtKola1">Tokens</span>: <strong id="t1-kola" class="neon-pink-text">0</strong> <span class="dim">|</span> <span id="txtLeft1">Left</span>: <strong id="t1-left">10</strong></div></div>
             <div id="trump-display-board" style="display: none;"><h4 id="txtTrumpBadge">TRUMP</h4><div id="current-trump-icon" class="suit-badge">♠</div></div>
-            <div class="score-card team2-score"><h3 id="t2Label">TEAM 2</h3><p><span id="txtKata2">Tricks</span>: <span id="t2-tricks" class="highlight">0</span> <span class="dim">/ 8</span></p><div class="kola-tracker"><span id="txtKola2">Tokens</span>: <strong id="t2-kola" class="neon-blue-text">0</strong> <span class="dim">|</span> <span id="txtLeft2">Left</span>: <strong id="t2-left">10</strong></div></div>
+            <div class="score-card team2-score"><h3 id="t2Label" class="team-label-ui">TEAM 2</h3><p><span id="txtKata2">Tricks</span>: <span id="t2-tricks" class="highlight">0</span> <span class="dim">/ 8</span></p><div class="kola-tracker"><span id="txtKola2">Tokens</span>: <strong id="t2-kola" class="neon-blue-text">0</strong> <span class="dim">|</span> <span id="txtLeft2">Left</span>: <strong id="t2-left">10</strong></div></div>
         </div>
         <div class="poker-table">
             <button onclick="quitToLobby()" class="action-btn outline small-btn" id="btnQuit" style="position: absolute; top: 15px; left: 15px; z-index: 50;">Exit Game</button>
@@ -193,6 +200,7 @@
         </div>
     </div>
 
+    <!-- ROOM CHAT SIDEBAR -->
     <div id="room-chat-sidebar" class="glass-panel" style="display: none; position: fixed; right: 20px; bottom: 20px; width: 280px; height: 380px; z-index: 3000; flex-direction: column; padding: 15px; border-radius: 16px; border: 2px solid #33b5e5; box-shadow: 0 0 20px rgba(51, 181, 229, 0.4); backdrop-filter: blur(15px); background: rgba(10, 10, 15, 0.85);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"><h3 id="txtRoomChatTitle" class="neon-blue-text" style="font-size: 1.1rem; margin:0;">ROOM CHAT</h3><span id="roomChatCodeDisplay" style="color: #ffd700; font-weight: bold; font-size: 0.9rem;"></span></div>
         <div id="roomChatMessages" style="flex: 1; background: rgba(0,0,0,0.6); border-radius: 8px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; font-size: 0.85rem;"></div>
