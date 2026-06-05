@@ -149,7 +149,6 @@ window.joinRoom = function() {
         if(snap.exists()) {
             let roomData = snap.val();
             
-            // STRICT DUPLICATE CHECK
             if (roomData.players.includes(botNames.p1)) {
                 alert("This Alias is already taken in that room! Please change your Alias in the code or use a different name.");
                 return; 
@@ -325,21 +324,17 @@ function shooterLoop() {
     
     sCtx.clearRect(0,0,800,500);
     
-    // Draw Grid
     sCtx.strokeStyle = "rgba(51, 181, 229, 0.1)"; sCtx.lineWidth = 1;
     for(let i=0; i<800; i+=50) { sCtx.beginPath(); sCtx.moveTo(i,0); sCtx.lineTo(i,500); sCtx.stroke(); sCtx.beginPath(); sCtx.moveTo(0,i); sCtx.lineTo(800,i); sCtx.stroke(); }
     
-    // Draw Players
     for(let p in remoteShooters) { let r = remoteShooters[p]; if(!r.dead && r.hp > 0) drawShooter(r.x, r.y, r.color, p, r.hp); }
     if(!localShooter.dead) drawShooter(localShooter.x, localShooter.y, localShooter.color, "YOU", localShooter.hp);
     
-    // Process Bullets
     for(let i=sBullets.length-1; i>=0; i--) {
         let b = sBullets[i]; b.x += b.vx; b.y += b.vy;
         sCtx.fillStyle = "#ffd700"; sCtx.beginPath(); sCtx.arc(b.x, b.y, 4, 0, Math.PI*2); sCtx.fill();
         if(b.x < 0 || b.x > 800 || b.y < 0 || b.y > 500) { sBullets.splice(i,1); continue; }
         
-        // Hit check
         if(b.owner !== botNames.p1 && !localShooter.dead && Math.hypot(b.x - localShooter.x, b.y - localShooter.y) < 20) {
             localShooter.hp -= 20; 
             document.getElementById('mainHealthBar').style.width = Math.max(0, localShooter.hp) + "%";
@@ -362,7 +357,6 @@ function shooterLoop() {
         }
     }
 
-    // Death Screen
     if(localShooter.dead) {
         sCtx.fillStyle = "rgba(255, 0, 0, 0.3)";
         sCtx.fillRect(0,0,800,500);
@@ -544,7 +538,7 @@ function botTTT() { if(!tttActive) return; let emptySpots = board.map((val, idx)
 function renderTTT() { const cells = document.querySelectorAll('.ttt-cell'); cells.forEach((cell, i) => { cell.innerText = board[i]; cell.className = "ttt-cell " + (board[i] === "X" ? "ttt-x" : (board[i] === "O" ? "ttt-o" : "")); }); }
 function checkTTTWin() { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for (let w of wins) { if (board[w[0]] && board[w[0]] === board[w[1]] && board[w[1]] === board[w[2]]) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = board[w[0]] === "X" ? lang[currentLang].tttWinX : lang[currentLang].tttWinO; if(!isMultiplayer && board[w[0]] === "X") addGlobalPoints(15); else if (isMultiplayer && board[w[0]] === (isHost ? "X" : "O")) addGlobalPoints(15); setTimeout(initTTT, 3000); return; } } if (!board.includes("")) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = lang[currentLang].tttDraw; setTimeout(initTTT, 3000); } }
 
-// --- OMI GAME ENGINE WITH MANUAL HOST SYNC ---
+// --- OMI GAME ENGINE (FIXED SYNC & SCORING) ---
 const suits = ['♠', '♥', '♣', '♦']; const values = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']; const cardPower = { '7':7, '8':8, '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14 }; const turnOrder = ['p1', 'p4', 'p3', 'p2']; const botNames = { p1: "You", p2: "Bot 2", p3: "Bot 3", p4: "Bot 4" }; 
 let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '', currentTrick = [], ledSuit = ''; let roundDealerIndex = 0, currentTurnIndex = 0; let team1Tricks = 0, team2Tricks = 0, team1Kola = 0, team2Kola = 0, trumpCallerId = ''; let activeSeporu = 0; let omiSynced = false;
 
@@ -555,7 +549,24 @@ function syncOmiFromFirebase() {
     db.ref("rooms/" + currentRoomCode + "/omiDeck").on("value", snap => { if(snap.exists() && !isHost) { fullDeck = snap.val(); document.getElementById('gameStatus').innerText = lang[currentLang].statusShuffle; let deckVis = document.getElementById('deck-visual'); deckVis.style.display = 'block'; deckVis.classList.add('shuffling'); setTimeout(() => { deckVis.classList.remove('shuffling'); let cutterId = turnOrder[(roundDealerIndex + 3) % 4]; updateActiveTurnUI(cutterId); if (cutterId === 'p1') { document.getElementById('gameStatus').innerText = lang[currentLang].myCutPrompt; document.getElementById('cut-selector').style.display = 'flex'; document.getElementById('cut-selector').style.justifyContent = 'center'; document.getElementById('cut-selector').style.gap = '10px'; } else { document.getElementById('gameStatus').innerText = isMultiplayer ? `Waiting for ${botNames[cutterId]}...` : botNames[cutterId] + lang[currentLang].statusCut; } }, 1500); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck2").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 3) % 4] !== 'p1') { fullDeck = snap.val(); executeCutLocal(); } });
     db.ref("rooms/" + currentRoomCode + "/omiTrump").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 1) % 4] !== 'p1') setTrumpLocal(snap.val()); });
-    db.ref("rooms/" + currentRoomCode + "/omiMove").on("value", snap => { if(snap.exists()) { let move = snap.val(); if(move.firebaseIdx !== myIndex) { let localId = turnOrder[(4 + move.firebaseIdx - myIndex) % 4]; let h = hands[localId]; if (!h) return; let cIdx = h.findIndex(c => c.suit === move.card.suit && c.value === move.card.value); if(cIdx > -1) { let playedCard = h.splice(cIdx, 1)[0]; executePlacement(localId, playedCard); currentTurnIndex = (currentTurnIndex + 1) % 4; playNextTurn(); } } } });
+    
+    // FIXED: Using .on("child_added") queue to prevent dropped trick moves
+    db.ref("rooms/" + currentRoomCode + "/omiMoves").on("child_added", snap => { 
+        if(snap.exists()) { 
+            let move = snap.val(); 
+            if(move.firebaseIdx !== myIndex) { 
+                let localId = turnOrder[(4 + move.firebaseIdx - myIndex) % 4]; 
+                let h = hands[localId]; if (!h) return; 
+                let cIdx = h.findIndex(c => c.suit === move.card.suit && c.value === move.card.value); 
+                if(cIdx > -1) { 
+                    let playedCard = h.splice(cIdx, 1)[0]; 
+                    executePlacement(localId, playedCard); 
+                    currentTurnIndex = (currentTurnIndex + 1) % 4; 
+                    playNextTurn(); 
+                } 
+            } 
+        } 
+    });
 }
 
 function updateActiveTurnUI(activeId) { ['p1', 'p2', 'p3', 'p4'].forEach(p => document.getElementById(`seat-${p}`).classList.remove('active-turn')); if(activeId) document.getElementById(`seat-${activeId}`).classList.add('active-turn'); }
@@ -643,7 +654,9 @@ function startLifecycle() {
         setTimeout(() => { deckVis.classList.remove('shuffling'); updateActiveTurnUI(cutterId); if (cutterId === 'p1') { document.getElementById('gameStatus').innerText = lang[currentLang].myCutPrompt; document.getElementById('cut-selector').style.display = 'flex'; document.getElementById('cut-selector').style.justifyContent = 'center'; document.getElementById('cut-selector').style.gap = '10px'; } else { document.getElementById('gameStatus').innerText = botNames[cutterId] + lang[currentLang].statusCut; setTimeout(() => executeCut(Math.random() > 0.5), 1500); } }, 1500);
     } else {
         if (isHost) {
-            db.ref("rooms/" + currentRoomCode + "/omiDeck2").remove(); db.ref("rooms/" + currentRoomCode + "/omiTrump").remove(); db.ref("rooms/" + currentRoomCode + "/omiMove").remove();
+            db.ref("rooms/" + currentRoomCode + "/omiDeck2").remove(); db.ref("rooms/" + currentRoomCode + "/omiTrump").remove(); 
+            db.ref("rooms/" + currentRoomCode + "/omiMoves").remove(); // Clears queue for fresh round
+            
             fullDeck = []; suits.forEach(s => values.forEach(v => fullDeck.push({suit: s, value: v, color: (s==='♥'||s==='♦')?'red':'black'}))); fullDeck.sort(() => Math.random() - 0.5); 
             let absDealer = window.currentAbsDealer !== undefined ? window.currentAbsDealer : Math.floor(Math.random() * 4);
             db.ref("rooms/" + currentRoomCode + "/omiDealer").set(absDealer); db.ref("rooms/" + currentRoomCode + "/omiDeck").set(fullDeck);
@@ -679,7 +692,8 @@ function playNextTurn() {
 window.humanPlay = function(idx) { 
     if (turnOrder[currentTurnIndex] !== 'p1') return; if (!getValidCards(hands['p1']).includes(hands['p1'][idx])) return; 
     let playedCard = hands['p1'].splice(idx, 1)[0]; executePlacement('p1', playedCard); 
-    if(isMultiplayer) db.ref("rooms/" + currentRoomCode + "/omiMove").set({ firebaseIdx: myIndex, card: playedCard, trick: currentTrick.length - 1, timestamp: Date.now() });
+    // FIXED: Using .push() prevents race condition overwrites!
+    if(isMultiplayer) db.ref("rooms/" + currentRoomCode + "/omiMoves").push({ firebaseIdx: myIndex, card: playedCard, timestamp: Date.now() });
     currentTurnIndex = (currentTurnIndex + 1) % 4; playNextTurn(); 
 };
 function runBotAI(botId) {
@@ -696,8 +710,25 @@ function evaluateTrickWinner() {
 }
 function evaluateMatchPoints() {
     let roundWinner = 0; let earnedTokens = 0; let isSeporu = false; let isDoubleSeporu = false;
-    if (team1Tricks === 4 && team2Tricks === 4) { if (activeSeporu === 1) { activeSeporu = 0; isDoubleSeporu = true; } else { activeSeporu = 1; isSeporu = true; } } 
-    else { if (team1Tricks === 8) { earnedTokens = 3; roundWinner = 1; } else if (team2Tricks === 8) { earnedTokens = 3; roundWinner = 2; } else if (team1Tricks > 4) { earnedTokens = 1; roundWinner = 1; } else if (team2Tricks > 4) { earnedTokens = 2; roundWinner = 2; } if (activeSeporu === 1) { earnedTokens += 1; activeSeporu = 0; } if (roundWinner === 1) team1Kola += earnedTokens; if (roundWinner === 2) team2Kola += earnedTokens; }
+    
+    // FIXED: True Omi Scoring based on who called Trump
+    let callerRelativeId = trumpCallerId; 
+    let callerTeam = (callerRelativeId === 'p1' || callerRelativeId === 'p3') ? 1 : 2;
+
+    if (team1Tricks === 4 && team2Tricks === 4) { 
+        if (activeSeporu === 1) { activeSeporu = 0; isDoubleSeporu = true; } else { activeSeporu = 1; isSeporu = true; } 
+    } 
+    else { 
+        if (team1Tricks === 8) { earnedTokens = (callerTeam === 1) ? 2 : 3; roundWinner = 1; } 
+        else if (team2Tricks === 8) { earnedTokens = (callerTeam === 2) ? 2 : 3; roundWinner = 2; } 
+        else if (team1Tricks > 4) { earnedTokens = (callerTeam === 1) ? 1 : 2; roundWinner = 1; } 
+        else if (team2Tricks > 4) { earnedTokens = (callerTeam === 2) ? 1 : 2; roundWinner = 2; } 
+        
+        if (activeSeporu === 1) { earnedTokens += 1; activeSeporu = 0; } 
+        if (roundWinner === 1) team1Kola += earnedTokens; 
+        if (roundWinner === 2) team2Kola += earnedTokens; 
+    }
+    
     updateScoresUI();
     if (team1Kola >= 10 || team2Kola >= 10) { isGameOver = true; if (team1Kola >= 10) addGlobalPoints(50); triggerCelebration('game', team1Kola >= 10 ? 1 : 2); } else if (isDoubleSeporu) { triggerCelebration('double_seporu', 0); } else if (isSeporu) { triggerCelebration('seporu', 0); } else { triggerCelebration('round', roundWinner, earnedTokens); }
 }
