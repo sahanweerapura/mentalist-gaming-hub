@@ -81,7 +81,13 @@ function toggleLanguage() {
     document.getElementById('roomModalTitle').innerText = l.roomModalTitle; document.getElementById('btnCreateRoom').innerText = l.btnCreateRoom; document.getElementById('txtOr').innerText = l.txtOr; document.getElementById('roomCodeInput').placeholder = l.roomCodeInputPH; document.getElementById('btnJoinRoom').innerText = l.btnJoinRoom; document.getElementById('btnCancelRoom').innerText = l.btnCancel; document.getElementById('btnStartMulti').innerText = l.btnStartMulti; document.getElementById('btnCancelWait').innerText = l.btnCancelWait; document.getElementById('txtWaitingPlayers').innerHTML = `${l.txtWaitingPlayers} <span id="queueCount">1</span>/<span id="queueMax">${currentLobbyMax}</span>`;
     document.getElementById('txtChatRooms').innerText = l.txtChatRooms; document.getElementById('btnCreateChat').innerText = l.btnCreateChat; document.getElementById('txtCreateChatTitle').innerText = l.txtCreateChatTitle; document.getElementById('btnConfirmChat').innerText = l.btnConfirmChat; document.getElementById('btnCancelChat').innerText = l.btnCancelChat; document.getElementById('txtChatLockTitle').innerText = l.txtChatLockTitle; document.getElementById('txtChatLockSub').innerText = l.txtChatLockSub; document.getElementById('btnVerifyChat').innerText = l.btnVerifyChat; document.getElementById('btnCancelPass').innerText = l.btnCancelPass; document.getElementById('btnSendChat').innerText = l.btnSendChat; if(!activeChatRoomId) document.getElementById('chatHeader').innerText = l.chatDefHeader;
     document.getElementById('txtRoomChatTitle').innerText = l.txtRoomChatTitle; document.getElementById('roomChatInput').placeholder = l.roomChatPH; document.getElementById('btnRoomSendChat').innerText = l.btnSendChat;
-    document.getElementById('t1Label').innerText = l.t1Label; document.getElementById('t2Label').innerText = l.t2Label; ['txtKata1', 'txtKata2'].forEach(id => document.getElementById(id).innerText = l.txtKata); document.getElementById('txtTrumpBadge').innerText = l.txtTrumpBadge; document.getElementById('lblPart').innerText = l.lblPart; document.getElementById('lblT1').innerText = l.lblPart; document.getElementById('lblT2A').innerText = l.lblT2; document.getElementById('lblT2B').innerText = l.lblT2; document.getElementById('btnCut').innerText = l.btnCut; document.getElementById('btnDecline').innerText = l.btnDecline; document.getElementById('trumpTitle').innerText = l.trumpTitle; document.getElementById('txtCrushScore').innerText = l.txtCrushScore; document.getElementById('txtCrushMoves').innerText = l.txtCrushMoves; document.getElementById('txtCrushLvl').innerText = l.txtCrushLvl;
+    
+    // Hardcode Team UI for Ormi (Top = Team 1 Partner, L/R = Team 2 Opponents)
+    document.getElementById('t1Label').innerText = l.t1Label; document.getElementById('t2Label').innerText = l.t2Label; 
+    document.getElementById('lblPart').innerText = l.lblPart; document.getElementById('lblT1').innerText = l.lblPart; 
+    document.getElementById('lblT2A').innerText = l.lblT2; document.getElementById('lblT2B').innerText = l.lblT2; 
+
+    ['txtKata1', 'txtKata2'].forEach(id => document.getElementById(id).innerText = l.txtKata); document.getElementById('txtTrumpBadge').innerText = l.txtTrumpBadge; document.getElementById('btnCut').innerText = l.btnCut; document.getElementById('btnDecline').innerText = l.btnDecline; document.getElementById('trumpTitle').innerText = l.trumpTitle; document.getElementById('txtCrushScore').innerText = l.txtCrushScore; document.getElementById('txtCrushMoves').innerText = l.txtCrushMoves; document.getElementById('txtCrushLvl').innerText = l.txtCrushLvl;
     updateRolesInUI(); 
     if(tttActive) { let mySymbol = isHost ? "X" : "O"; document.getElementById('tttStatus').innerText = board.includes("X") || board.includes("O") ? (tttPlayerTurn ? (currentLang==='si'?`ඔබේ වාරය! (${mySymbol})`:`Your Turn! (${mySymbol})`) : (currentLang==='si'?"ප්‍රතිවාදියාගේ වාරය...":"Waiting for Opponent...")) : l.tttYourTurn; }
 }
@@ -182,62 +188,105 @@ function startMultiplayerGameClient() {
 window.closeWaitingModal = function() { if(currentRoomCode) { if(isHost) db.ref("rooms/" + currentRoomCode).remove(); db.ref("rooms/" + currentRoomCode).off(); } document.getElementById('waiting-modal').style.display = 'none'; document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('room-chat-sidebar').style.display = 'none'; };
 window.quitToLobby = function() { isGameOver = true; team1Kola = 0; team2Kola = 0; activeSeporu = 0; tttActive = false; shooterActive = false; if (crushInterval) clearInterval(crushInterval); if(currentRoomCode) { if(isHost) db.ref("rooms/" + currentRoomCode).remove(); db.ref("rooms/" + currentRoomCode).off(); } document.getElementById('game-screen').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'none'; document.getElementById('shooter-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; document.getElementById('room-chat-sidebar').style.display = 'none'; };
 
+// ROOM CHAT HUD WITH MINIMIZE FEATURE
+let roomChatMinimized = false;
 function openRoomChat(code) { document.getElementById('room-chat-sidebar').style.display = 'flex'; document.getElementById('roomChatCodeDisplay').innerText = code.toUpperCase(); document.getElementById('roomChatMessages').innerHTML = ''; }
+window.toggleRoomChat = function() {
+    roomChatMinimized = !roomChatMinimized;
+    document.getElementById('roomChatBody').style.display = roomChatMinimized ? 'none' : 'flex';
+    document.getElementById('chatMinimizeBtn').innerText = roomChatMinimized ? '□' : '_';
+    document.getElementById('room-chat-sidebar').style.height = roomChatMinimized ? 'auto' : '380px';
+}
 window.toggleEmojiPicker = function() { const picker = document.getElementById('emoji-picker'); picker.style.display = picker.style.display === 'none' ? 'flex' : 'none'; }
 window.insertEmoji = function(emoji) { const input = document.getElementById('roomChatInput'); input.value += emoji; toggleEmojiPicker(); input.focus(); }
 window.sendRoomMessage = function() { const input = document.getElementById('roomChatInput'); if(!input.value || !currentRoomCode) return; db.ref("rooms/" + currentRoomCode + "/chat").once("value", snap => { let chat = snap.val() || []; chat.push({ user: userProfile.alias, text: input.value }); db.ref("rooms/" + currentRoomCode + "/chat").set(chat); input.value = ''; }); }
 
-// --- NEON BLASTER ARENA (SHOOTER) ---
-let shooterActive = false; let sCanvas, sCtx; let localShooter = { x: 400, y: 250, hp: 100, score: 0, color: '#33b5e5' }; let remoteShooters = {}; let sBullets = []; let sKeys = {}; let mx = 400, my = 250; let lastShot = 0;
+// --- NEON BLASTER ARENA (SHOOTER) DEATHMATCH ---
+let shooterActive = false; let sCanvas, sCtx; let localShooter = { x: 400, y: 250, hp: 100, dead: false, color: '#33b5e5' }; let remoteShooters = {}; let sBullets = []; let sKeys = {}; let mx = 400, my = 250; let lastShot = 0; let shooterKills = {};
 
 function initShooter() {
     shooterActive = true; sCanvas = document.getElementById('shooterCanvas'); sCtx = sCanvas.getContext('2d');
-    localShooter = { x: 100 + Math.random() * 600, y: 100 + Math.random() * 300, hp: 100, score: 0, color: isHost ? '#ff3366' : '#33b5e5' }; sBullets = []; remoteShooters = {};
+    localShooter = { x: 100 + Math.random() * 600, y: 100 + Math.random() * 300, hp: 100, dead: false, color: isHost ? '#ff3366' : '#33b5e5' }; sBullets = []; remoteShooters = {}; shooterKills = {};
+    document.getElementById('mainHealthBar').style.width = "100%"; document.getElementById('mainHealthText').innerText = "100%";
+    
     window.addEventListener('keydown', e => sKeys[e.key.toLowerCase()] = true); window.addEventListener('keyup', e => sKeys[e.key.toLowerCase()] = false);
     sCanvas.addEventListener('mousemove', e => { let r = sCanvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
     sCanvas.addEventListener('mousedown', () => { 
-        if(!shooterActive || localShooter.hp <= 0 || Date.now() - lastShot < 200) return;
+        if(!shooterActive || localShooter.dead || Date.now() - lastShot < 200) return;
         lastShot = Date.now();
         let angle = Math.atan2(my - localShooter.y, mx - localShooter.x);
         let b = { id: Date.now() + Math.random(), owner: botNames.p1, x: localShooter.x, y: localShooter.y, vx: Math.cos(angle)*10, vy: Math.sin(angle)*10 };
         sBullets.push(b); if(isMultiplayer && currentRoomCode) db.ref("rooms/"+currentRoomCode+"/bullets").push(b);
     });
+    
+    if(isMultiplayer && isHost && currentRoomCode) { db.ref("rooms/"+currentRoomCode+"/shooterKills").set({}); }
     requestAnimationFrame(shooterLoop);
 }
 
 function syncShooterFirebase() {
     if(!isMultiplayer || !currentRoomCode) return;
-    setInterval(() => { if(shooterActive && localShooter.hp > 0) db.ref("rooms/"+currentRoomCode+"/players/"+botNames.p1).set(localShooter); }, 50);
-    db.ref("rooms/"+currentRoomCode+"/players").on("value", snap => { if(snap.exists()) { let d = snap.val(); for(let p in d) { if(p !== botNames.p1) remoteShooters[p] = d[p]; } } });
+    setInterval(() => { if(shooterActive && !localShooter.dead) db.ref("rooms/"+currentRoomCode+"/players/"+botNames.p1).set(localShooter); }, 50);
+    db.ref("rooms/"+currentRoomCode+"/players").on("value", snap => { if(snap.exists() && shooterActive) { let d = snap.val(); for(let p in d) { if(p !== botNames.p1) remoteShooters[p] = d[p]; } } });
     db.ref("rooms/"+currentRoomCode+"/bullets").on("child_added", snap => { let b = snap.val(); if(b.owner !== botNames.p1) sBullets.push(b); });
+    
+    // Leaderboard Sync
+    db.ref("rooms/"+currentRoomCode+"/shooterKills").on("value", snap => {
+        if(snap.exists() && shooterActive) {
+            shooterKills = snap.val();
+            let sorted = Object.keys(shooterKills).sort((a,b) => shooterKills[b] - shooterKills[a]);
+            let html = "";
+            for(let i=0; i<Math.min(5, sorted.length); i++) {
+                html += `<div class="leaderboard-item"><span>${i+1}. ${sorted[i]}</span><span>${shooterKills[sorted[i]]} Kills</span></div>`;
+                if (shooterKills[sorted[i]] >= 15) {
+                    shooterActive = false;
+                    alert(`${sorted[i]} WINS THE MATCH!`);
+                    quitToLobby();
+                }
+            }
+            document.getElementById('shooterLeaderboard').innerHTML = html;
+        }
+    });
 }
 
 function shooterLoop() {
     if(!shooterActive) return;
-    if(localShooter.hp > 0) {
+    if(!localShooter.dead) {
         if(sKeys['w']) localShooter.y -= 4; if(sKeys['s']) localShooter.y += 4; if(sKeys['a']) localShooter.x -= 4; if(sKeys['d']) localShooter.x += 4;
         localShooter.x = Math.max(15, Math.min(785, localShooter.x)); localShooter.y = Math.max(15, Math.min(485, localShooter.y));
     }
     sCtx.clearRect(0,0,800,500);
-    
-    // Draw Grid
     sCtx.strokeStyle = "rgba(51, 181, 229, 0.1)"; sCtx.lineWidth = 1;
     for(let i=0; i<800; i+=50) { sCtx.beginPath(); sCtx.moveTo(i,0); sCtx.lineTo(i,500); sCtx.stroke(); sCtx.beginPath(); sCtx.moveTo(0,i); sCtx.lineTo(800,i); sCtx.stroke(); }
     
-    // Draw Players
-    for(let p in remoteShooters) { let r = remoteShooters[p]; if(r.hp > 0) drawShooter(r.x, r.y, r.color, p, r.hp); }
-    if(localShooter.hp > 0) drawShooter(localShooter.x, localShooter.y, localShooter.color, "YOU", localShooter.hp);
+    for(let p in remoteShooters) { let r = remoteShooters[p]; if(!r.dead && r.hp > 0) drawShooter(r.x, r.y, r.color, p, r.hp); }
+    if(!localShooter.dead) drawShooter(localShooter.x, localShooter.y, localShooter.color, "YOU", localShooter.hp);
     
-    // Bullets
     for(let i=sBullets.length-1; i>=0; i--) {
         let b = sBullets[i]; b.x += b.vx; b.y += b.vy;
         sCtx.fillStyle = "#ffd700"; sCtx.beginPath(); sCtx.arc(b.x, b.y, 4, 0, Math.PI*2); sCtx.fill();
         if(b.x < 0 || b.x > 800 || b.y < 0 || b.y > 500) { sBullets.splice(i,1); continue; }
-        // Hit check
-        if(b.owner !== botNames.p1 && localShooter.hp > 0 && Math.hypot(b.x - localShooter.x, b.y - localShooter.y) < 20) {
-            localShooter.hp -= 20; document.getElementById('shooterHP').innerText = localShooter.hp;
+        
+        // Accurate Hit Check
+        if(b.owner !== botNames.p1 && !localShooter.dead && Math.hypot(b.x - localShooter.x, b.y - localShooter.y) < 20) {
+            localShooter.hp -= 20; 
+            document.getElementById('mainHealthBar').style.width = Math.max(0, localShooter.hp) + "%";
+            document.getElementById('mainHealthText').innerText = Math.max(0, localShooter.hp) + "%";
+            
+            if(localShooter.hp <= 0 && !localShooter.dead) { 
+                localShooter.dead = true; localShooter.hp = 0;
+                // Add Kill to Shooter
+                if(isMultiplayer && currentRoomCode) {
+                    let currentKills = shooterKills[b.owner] || 0;
+                    db.ref("rooms/"+currentRoomCode+"/shooterKills/"+b.owner).set(currentKills + 1);
+                    db.ref("rooms/"+currentRoomCode+"/players/"+botNames.p1).set(localShooter);
+                }
+                setTimeout(() => {
+                    localShooter.hp = 100; localShooter.dead = false;
+                    localShooter.x = 100 + Math.random() * 600; localShooter.y = 100 + Math.random() * 300;
+                    document.getElementById('mainHealthBar').style.width = "100%"; document.getElementById('mainHealthText').innerText = "100%";
+                }, 3000);
+            }
             sBullets.splice(i,1);
-            if(localShooter.hp <= 0) { alert("You were destroyed! Spectating..."); localShooter.hp = 0; }
         }
     }
     requestAnimationFrame(shooterLoop);
@@ -250,7 +299,7 @@ function drawShooter(x, y, color, name, hp) {
     sCtx.fillStyle = "#ff3366"; sCtx.fillRect(x-15, y-20, 30, 4); sCtx.fillStyle = "#00ff00"; sCtx.fillRect(x-15, y-20, 30 * (hp/100), 4);
 }
 
-// --- SWEET CRUSH FIX (REAL ICE LOCKS) ---
+// --- SWEET CRUSH FIX (REAL ICE LOCKS & BOMB POWERS) ---
 const crushGems = ['gem-red', 'gem-orange', 'gem-yellow', 'gem-green', 'gem-blue', 'gem-purple']; 
 let crushWidth = 8; let crushGrid = []; let crushScore = 0; let crushLevel = 1; let crushMoves = 30; let iceBlocks = []; let draggedCandy, replacedCandy; let crushInterval;
 
@@ -291,17 +340,39 @@ function dragEnd() {
     let draggedId = parseInt(draggedCandy.id); let replacedId = parseInt(replacedCandy.id); let validMoves = [draggedId - 1, draggedId - crushWidth, draggedId + 1, draggedId + crushWidth]; 
     if (validMoves.includes(replacedId) && crushMoves > 0) { 
         let draggedClass = getGemClass(draggedCandy); let replacedClass = getGemClass(replacedCandy); 
+        let draggedBomb = draggedCandy.classList.contains('power-bomb'); let replacedBomb = replacedCandy.classList.contains('power-bomb');
+        
         draggedCandy.classList.remove(draggedClass); draggedCandy.classList.add(replacedClass); replacedCandy.classList.remove(replacedClass); replacedCandy.classList.add(draggedClass); 
+        
+        if(draggedBomb) { draggedCandy.classList.remove('power-bomb'); replacedCandy.classList.add('power-bomb'); }
+        if(replacedBomb) { replacedCandy.classList.remove('power-bomb'); draggedCandy.classList.add('power-bomb'); }
+        
         crushMoves--; document.getElementById('crushMovesText').innerText = crushMoves; 
     } 
     draggedCandy = null; replacedCandy = null; 
 }
 
-function triggerCrushAnim(indexes) { 
+function triggerCrushAnim(indexes, createBombIndex = -1) { 
     let brokeIce = false;
-    indexes.forEach(index => { 
+    let fullClearList = new Set(indexes);
+
+    // Expand deletion if a bomb is included
+    indexes.forEach(idx => {
+        if(crushGrid[idx].classList.contains('power-bomb') && idx !== createBombIndex) {
+            let adj = [idx-9, idx-8, idx-7, idx-1, idx, idx+1, idx+7, idx+8, idx+9];
+            adj.forEach(a => { if(a>=0 && a<64) fullClearList.add(a); });
+        }
+    });
+
+    fullClearList.forEach(index => { 
+        if(index === createBombIndex) {
+            crushGrid[index].classList.add('power-bomb');
+            crushScore += 20; return; // Don't destroy the newly formed bomb
+        }
+
         crushGrid[index].classList.add('crush-anim'); 
-        // Break adjacent ice
+        crushGrid[index].classList.remove('power-bomb');
+        
         let adj = [index-1, index+1, index-8, index+8];
         adj.forEach(a => {
             if(a>=0 && a<64 && iceBlocks[a] && Math.abs((a%8) - (index%8)) <= 1) {
@@ -315,8 +386,37 @@ function triggerCrushAnim(indexes) {
     if(brokeIce) document.getElementById('crushScore').innerText = crushScore;
 }
 
-function checkRowForThree() { for (let i = 0; i < 61; i++) { let rowOfThree = [i, i + 1, i + 2]; let decidedClass = getGemClass(crushGrid[i]); if ([6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55].includes(i)) continue; if (decidedClass && !crushGrid[i].classList.contains('ice') && rowOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { crushScore += 10; document.getElementById('crushScore').innerText = crushScore; triggerCrushAnim(rowOfThree); } } }
-function checkColumnForThree() { for (let i = 0; i < 47; i++) { let columnOfThree = [i, i + 8, i + 16]; let decidedClass = getGemClass(crushGrid[i]); if (decidedClass && !crushGrid[i].classList.contains('ice') && columnOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { crushScore += 10; document.getElementById('crushScore').innerText = crushScore; triggerCrushAnim(columnOfThree); } } }
+function checkRowForThree() { 
+    for (let i = 0; i < 64; i++) { 
+        if(i%8 > 5) continue; // Out of bounds for horizontal 3
+        let rowOfThree = [i, i + 1, i + 2]; 
+        let decidedClass = getGemClass(crushGrid[i]); 
+        
+        if (decidedClass && !crushGrid[i].classList.contains('ice') && rowOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { 
+            let matchLength = 3; let matchIndexes = [...rowOfThree];
+            if(i%8 <= 4 && getGemClass(crushGrid[i+3]) === decidedClass && !crushGrid[i+3].classList.contains('ice')) { matchLength = 4; matchIndexes.push(i+3); }
+            if(i%8 <= 3 && matchLength === 4 && getGemClass(crushGrid[i+4]) === decidedClass && !crushGrid[i+4].classList.contains('ice')) { matchLength = 5; matchIndexes.push(i+4); }
+            
+            crushScore += matchLength * 10; document.getElementById('crushScore').innerText = crushScore; 
+            triggerCrushAnim(matchIndexes, matchLength >= 4 ? i : -1); 
+        } 
+    } 
+}
+
+function checkColumnForThree() { 
+    for (let i = 0; i < 48; i++) { 
+        let columnOfThree = [i, i + 8, i + 16]; 
+        let decidedClass = getGemClass(crushGrid[i]); 
+        if (decidedClass && !crushGrid[i].classList.contains('ice') && columnOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { 
+            let matchLength = 3; let matchIndexes = [...columnOfThree];
+            if(i < 40 && getGemClass(crushGrid[i+24]) === decidedClass && !crushGrid[i+24].classList.contains('ice')) { matchLength = 4; matchIndexes.push(i+24); }
+            if(i < 32 && matchLength === 4 && getGemClass(crushGrid[i+32]) === decidedClass && !crushGrid[i+32].classList.contains('ice')) { matchLength = 5; matchIndexes.push(i+32); }
+            
+            crushScore += matchLength * 10; document.getElementById('crushScore').innerText = crushScore; 
+            triggerCrushAnim(matchIndexes, matchLength >= 4 ? i : -1); 
+        } 
+    } 
+}
 
 function checkCrushLevelStatus(target) { 
     if (crushScore >= target) { clearInterval(crushInterval); alert(currentLang === 'si' ? "නියමයි! ඊළඟ මට්ටම!" : "Level complete!"); crushLevel++; addGlobalPoints(10); initCrush(); } 
@@ -327,7 +427,11 @@ function moveDown() {
     for (let i = 0; i < 55; i++) { 
         if (!getGemClass(crushGrid[i + 8]) && !iceBlocks[i + 8]) { 
             let topClass = getGemClass(crushGrid[i]); 
-            if(topClass && !iceBlocks[i]) { crushGrid[i + 8].classList.add(topClass); crushGrid[i].classList.remove(topClass); } 
+            let isBomb = crushGrid[i].classList.contains('power-bomb');
+            if(topClass && !iceBlocks[i]) { 
+                crushGrid[i + 8].classList.add(topClass); crushGrid[i].classList.remove(topClass); 
+                if(isBomb) { crushGrid[i+8].classList.add('power-bomb'); crushGrid[i].classList.remove('power-bomb'); }
+            } 
         } 
         if ([0, 1, 2, 3, 4, 5, 6, 7].includes(i) && !getGemClass(crushGrid[i]) && !iceBlocks[i]) { 
             crushGrid[i].classList.add(crushGems[Math.floor(Math.random() * crushGems.length)]); 
@@ -360,12 +464,16 @@ function botTTT() { if(!tttActive) return; let emptySpots = board.map((val, idx)
 function renderTTT() { const cells = document.querySelectorAll('.ttt-cell'); cells.forEach((cell, i) => { cell.innerText = board[i]; cell.className = "ttt-cell " + (board[i] === "X" ? "ttt-x" : (board[i] === "O" ? "ttt-o" : "")); }); }
 function checkTTTWin() { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for (let w of wins) { if (board[w[0]] && board[w[0]] === board[w[1]] && board[w[1]] === board[w[2]]) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = board[w[0]] === "X" ? lang[currentLang].tttWinX : lang[currentLang].tttWinO; if(!isMultiplayer && board[w[0]] === "X") addGlobalPoints(15); else if (isMultiplayer && board[w[0]] === (isHost ? "X" : "O")) addGlobalPoints(15); setTimeout(initTTT, 3000); return; } } if (!board.includes("")) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = lang[currentLang].tttDraw; setTimeout(initTTT, 3000); } }
 
-// --- OMI GAME ENGINE WITH RELATIVE MULTIPLAYER SYNC ---
+// --- OMI GAME ENGINE WITH MANUAL HOST SYNC ---
 const suits = ['♠', '♥', '♣', '♦']; const values = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']; const cardPower = { '7':7, '8':8, '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14 }; const turnOrder = ['p1', 'p4', 'p3', 'p2']; const botNames = { p1: "You", p2: "Bot 2", p3: "Bot 3", p4: "Bot 4" }; 
 let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '', currentTrick = [], ledSuit = ''; let roundDealerIndex = 0, currentTurnIndex = 0; let team1Tricks = 0, team2Tricks = 0, team1Kola = 0, team2Kola = 0, trumpCallerId = ''; let activeSeporu = 0; let omiSynced = false;
 
 function syncOmiFromFirebase() {
     if(!isMultiplayer || !currentRoomCode || omiSynced) return; omiSynced = true;
+    
+    // Listen for manual round starts from Host
+    db.ref("rooms/" + currentRoomCode + "/nextRound").on("value", snap => { if(snap.exists() && !isHost && document.getElementById('celebration-overlay').style.display === 'flex') { closeCelebrationForce(); } });
+    
     db.ref("rooms/" + currentRoomCode + "/omiDealer").on("value", snap => { if(snap.exists()) { window.currentAbsDealer = snap.val(); roundDealerIndex = (window.currentAbsDealer - myIndex + 4) % 4; trumpCallerId = turnOrder[(roundDealerIndex + 1) % 4]; updateRolesInUI(); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck").on("value", snap => { if(snap.exists() && !isHost) { fullDeck = snap.val(); document.getElementById('gameStatus').innerText = lang[currentLang].statusShuffle; let deckVis = document.getElementById('deck-visual'); deckVis.style.display = 'block'; deckVis.classList.add('shuffling'); setTimeout(() => { deckVis.classList.remove('shuffling'); let cutterId = turnOrder[(roundDealerIndex + 3) % 4]; updateActiveTurnUI(cutterId); if (cutterId === 'p1') { document.getElementById('gameStatus').innerText = lang[currentLang].myCutPrompt; document.getElementById('cut-selector').style.display = 'flex'; document.getElementById('cut-selector').style.justifyContent = 'center'; document.getElementById('cut-selector').style.gap = '10px'; } else { document.getElementById('gameStatus').innerText = isMultiplayer ? `Waiting for ${botNames[cutterId]}...` : botNames[cutterId] + lang[currentLang].statusCut; } }, 1500); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck2").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 3) % 4] !== 'p1') { fullDeck = snap.val(); executeCutLocal(); } });
@@ -374,8 +482,44 @@ function syncOmiFromFirebase() {
 }
 
 function updateActiveTurnUI(activeId) { ['p1', 'p2', 'p3', 'p4'].forEach(p => document.getElementById(`seat-${p}`).classList.remove('active-turn')); if(activeId) document.getElementById(`seat-${activeId}`).classList.add('active-turn'); }
-function triggerCelebration(type, winningTeam, tokensEarned = 0) { updateActiveTurnUI(null); const overlay = document.getElementById('celebration-overlay'); const title = document.getElementById('celebration-title'); const subtitle = document.getElementById('celebration-subtitle'); const gif = document.getElementById('celebration-gif'); const btn = document.getElementById('celeb-btn'); let teamNameStr = winningTeam === 1 ? lang[currentLang].lblPart : lang[currentLang].lblT2; overlay.style.display = 'flex'; if (type !== 'seporu' && type !== 'double_seporu') generateFireworks(); else document.getElementById('fireworks-container').innerHTML = ''; if (type === 'round') { let tokenUnit = currentLang === 'si' ? " කැටකොල)" : " Tokens)"; title.innerText = lang[currentLang].celebTokens; subtitle.innerText = teamNameStr + lang[currentLang].celebWinRnd + tokensEarned + tokenUnit; btn.innerText = lang[currentLang].btnCont; const roundGifs = ["https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif", "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif"]; gif.src = roundGifs[Math.floor(Math.random() * roundGifs.length)]; } else if (type === 'game') { title.innerText = lang[currentLang].celebChamp; subtitle.innerText = lang[currentLang].celebWinGame + teamNameStr + "!"; btn.innerText = lang[currentLang].btnAgain; gif.src = "https://media.giphy.com/media/cnuNz0fTBIUGnx4F9T/giphy.gif"; } else if (type === 'seporu') { title.innerText = lang[currentLang].celebSeporu; subtitle.innerText = lang[currentLang].celebSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; } else if (type === 'double_seporu') { title.innerText = lang[currentLang].celebDblSeporu; subtitle.innerText = lang[currentLang].celebDblSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; } }
-window.closeCelebration = function() { document.getElementById('celebration-overlay').style.display = 'none'; if (isGameOver) { team1Kola = 0; team2Kola = 0; activeSeporu = 0; isGameOver = false; window.currentAbsDealer = undefined; window.soloDealerIndex = undefined; startLifecycle(); } else { if (isMultiplayer) { if (isHost) { window.currentAbsDealer = (window.currentAbsDealer + 1) % 4; db.ref("rooms/" + currentRoomCode + "/omiDealer").set(window.currentAbsDealer); } } else { window.soloDealerIndex = (window.soloDealerIndex + 1) % 4; } startLifecycle(); } };
+
+function triggerCelebration(type, winningTeam, tokensEarned = 0) { 
+    updateActiveTurnUI(null); const overlay = document.getElementById('celebration-overlay'); const title = document.getElementById('celebration-title'); const subtitle = document.getElementById('celebration-subtitle'); const gif = document.getElementById('celebration-gif'); const btn = document.getElementById('celeb-btn'); let teamNameStr = winningTeam === 1 ? lang[currentLang].lblPart : lang[currentLang].lblT2; overlay.style.display = 'flex'; 
+    if (type !== 'seporu' && type !== 'double_seporu') generateFireworks(); else document.getElementById('fireworks-container').innerHTML = ''; 
+    if (type === 'round') { let tokenUnit = currentLang === 'si' ? " කැටකොල)" : " Tokens)"; title.innerText = lang[currentLang].celebTokens; subtitle.innerText = teamNameStr + lang[currentLang].celebWinRnd + tokensEarned + tokenUnit; btn.innerText = lang[currentLang].btnCont; const roundGifs = ["https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif", "https://media.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif"]; gif.src = roundGifs[Math.floor(Math.random() * roundGifs.length)]; } 
+    else if (type === 'game') { title.innerText = lang[currentLang].celebChamp; subtitle.innerText = lang[currentLang].celebWinGame + teamNameStr + "!"; btn.innerText = lang[currentLang].btnAgain; gif.src = "https://media.giphy.com/media/cnuNz0fTBIUGnx4F9T/giphy.gif"; } 
+    else if (type === 'seporu') { title.innerText = lang[currentLang].celebSeporu; subtitle.innerText = lang[currentLang].celebSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; } 
+    else if (type === 'double_seporu') { title.innerText = lang[currentLang].celebDblSeporu; subtitle.innerText = lang[currentLang].celebDblSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; } 
+
+    // HOST MANUAL ROUND START LOGIC
+    if(isMultiplayer && !isGameOver) {
+        document.getElementById('celeb-btn').style.display = 'none'; // Hide default continue
+        if(isHost) document.getElementById('btnHostNextRound').style.display = 'block';
+        else subtitle.innerHTML += "<br><br><span style='color:#33b5e5; font-size:0.9rem;'>Waiting for Host to start next round...</span>";
+    } else {
+        document.getElementById('celeb-btn').style.display = 'block';
+        document.getElementById('btnHostNextRound').style.display = 'none';
+    }
+}
+
+window.hostTriggerNextRound = function() {
+    if(!isHost || !isMultiplayer) return;
+    db.ref("rooms/" + currentRoomCode + "/nextRound").set(Date.now());
+    closeCelebrationForce();
+}
+
+window.closeCelebration = function() { 
+    if(isMultiplayer && !isGameOver) return; // Block manual close in MP
+    closeCelebrationForce(); 
+};
+
+function closeCelebrationForce() {
+    document.getElementById('celebration-overlay').style.display = 'none'; 
+    document.getElementById('btnHostNextRound').style.display = 'none';
+    if (isGameOver) { team1Kola = 0; team2Kola = 0; activeSeporu = 0; isGameOver = false; window.currentAbsDealer = undefined; window.soloDealerIndex = undefined; startLifecycle(); } 
+    else { if (isMultiplayer) { if (isHost) { window.currentAbsDealer = (window.currentAbsDealer + 1) % 4; db.ref("rooms/" + currentRoomCode + "/omiDealer").set(window.currentAbsDealer); } } else { window.soloDealerIndex = (window.soloDealerIndex + 1) % 4; } startLifecycle(); } 
+}
+
 function updateRolesInUI() { ['p1', 'p2', 'p3', 'p4'].forEach(p => document.getElementById(`role-${p}`).innerText = ""); document.getElementById(`role-${turnOrder[roundDealerIndex]}`).innerText = lang[currentLang].roleDealer; }
 
 function startLifecycle() {
