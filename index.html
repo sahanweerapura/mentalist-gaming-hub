@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentalist Live | Gaming Hub</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FIREBASE MULTIPLAYER ENGINE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
@@ -17,7 +16,6 @@
         <button id="langToggle" onclick="toggleLanguage()">සිංහල (Sinhala)</button>
     </header>
 
-    <!-- LOGIN SCREEN -->
     <div id="login-screen" class="glass-panel card">
         <h2 id="registerTitle">ENTER THE LOBBY</h2>
         <form id="playerForm">
@@ -28,7 +26,6 @@
         </form>
     </div>
 
-    <!-- GAME LOBBY & CHAT HUB -->
     <div id="lobby-screen" style="display: none; width: 98vw; max-width: 1200px; display: flex; flex-direction: column; gap: 20px;">
         
         <div class="glass-panel card profile-strip" style="width: 100%; max-width: 100%; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;">
@@ -67,10 +64,11 @@
                     <p id="txtGameCrushDesc">Match 3 Puzzle Game</p>
                     <div class="reward-tag">+10 MP / Level</div>
                 </div>
-                <div class="game-box locked">
-                    <div class="game-icon">🚗</div>
-                    <h3 id="txtGameSoon2" class="neon-gold-text">GTA FIVEM</h3>
-                    <button class="neon-btn outline small-btn disabled" disabled id="btnLocked2">LOCKED</button>
+                <div class="game-box active" onclick="openModeModal('shooter')">
+                    <div class="game-icon">🔫</div>
+                    <h3 id="txtGameShooter" class="neon-gold-text">NEON BLASTER</h3>
+                    <p id="txtGameShooterDesc">Live Arena Shooter</p>
+                    <div class="reward-tag">+5 MP / Kill</div>
                 </div>
             </div>
         </div>
@@ -157,6 +155,18 @@
 
     <div id="point-popups"></div>
 
+    <!-- NEW: NEON BLASTER SCREEN -->
+    <div id="shooter-screen" style="display: none; position: relative;" class="glass-panel card shooter-container">
+        <button onclick="quitToLobby()" class="action-btn outline small-btn" id="btnQuitShooter" style="position: absolute; top: 15px; left: 15px; z-index: 50;">Exit Match</button>
+        <h2 id="shooterStatus" class="neon-gold-text" style="margin-top: -10px;">NEON BLASTER ARENA</h2>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; font-weight: bold;">
+            <div style="color: #00ff00;">HP: <span id="shooterHP">100</span></div>
+            <div style="color: #ff3366;">SCORE: <span id="shooterScore">0</span></div>
+        </div>
+        <canvas id="shooterCanvas" width="800" height="500" style="background: #000; border: 2px solid #33b5e5; border-radius: 12px; box-shadow: 0 0 20px rgba(51, 181, 229, 0.4);"></canvas>
+        <p style="color:#aaa; font-size:0.8rem; margin-top:10px;">WASD to Move | Mouse to Aim & Shoot</p>
+    </div>
+
     <!-- SWEET CRUSH SCREEN -->
     <div id="crush-screen" style="display: none;" class="glass-panel card crush-container">
         <button onclick="quitToLobby()" class="action-btn outline small-btn" id="btnQuitCrush" style="position: absolute; top: 15px; left: 15px; z-index: 50;">Exit</button>
@@ -165,7 +175,7 @@
             <div class="crush-hud-box"><span id="txtCrushMoves">MOVES</span><h3 id="crushMovesText" class="neon-blue-text">30</h3></div>
             <div class="crush-hud-box"><span id="txtCrushScore">SCORE</span><h3 id="crushScore" class="neon-pink-text">0</h3></div>
         </div>
-        <div id="crushObjectiveDisplay" class="crush-objective-banner">Objective: Break all ice blocks!</div>
+        <div id="crushObjectiveDisplay" class="crush-objective-banner">Objective: Reach 300 Points!</div>
         <div id="crushBoard" class="crush-board"></div>
     </div>
 
