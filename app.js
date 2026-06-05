@@ -82,7 +82,6 @@ function toggleLanguage() {
     document.getElementById('txtChatRooms').innerText = l.txtChatRooms; document.getElementById('btnCreateChat').innerText = l.btnCreateChat; document.getElementById('txtCreateChatTitle').innerText = l.txtCreateChatTitle; document.getElementById('btnConfirmChat').innerText = l.btnConfirmChat; document.getElementById('btnCancelChat').innerText = l.btnCancelChat; document.getElementById('txtChatLockTitle').innerText = l.txtChatLockTitle; document.getElementById('txtChatLockSub').innerText = l.txtChatLockSub; document.getElementById('btnVerifyChat').innerText = l.btnVerifyChat; document.getElementById('btnCancelPass').innerText = l.btnCancelPass; document.getElementById('btnSendChat').innerText = l.btnSendChat; if(!activeChatRoomId) document.getElementById('chatHeader').innerText = l.chatDefHeader;
     document.getElementById('txtRoomChatTitle').innerText = l.txtRoomChatTitle; document.getElementById('roomChatInput').placeholder = l.roomChatPH; document.getElementById('btnRoomSendChat').innerText = l.btnSendChat;
     
-    // Hardcode Team UI for Ormi (Top = Team 1 Partner, L/R = Team 2 Opponents)
     document.getElementById('t1Label').innerText = l.t1Label; document.getElementById('t2Label').innerText = l.t2Label; 
     document.getElementById('lblPart').innerText = l.lblPart; document.getElementById('lblT1').innerText = l.lblPart; 
     document.getElementById('lblT2A').innerText = l.lblT2; document.getElementById('lblT2B').innerText = l.lblT2; 
@@ -136,7 +135,7 @@ window.launchGame = function(mode) {
 };
 
 window.createRoom = function() {
-    currentLobbyMax = (selectedGame === 'omi') ? 4 : (selectedGame === 'shooter' ? 4 : 2); 
+    currentLobbyMax = (selectedGame === 'omi') ? 4 : (selectedGame === 'shooter' ? 6 : 2); 
     let code = Math.random().toString(36).substring(2, 8).toUpperCase(); currentRoomCode = code; isHost = true;
     db.ref("rooms/" + code).set({ game: selectedGame, host: botNames.p1, maxPlayers: currentLobbyMax, players: [botNames.p1], status: "waiting", chat: [] });
     document.getElementById('room-modal').style.display = 'none'; let l = lang[currentLang];
@@ -171,7 +170,18 @@ function listenToFirebaseRoom(code) {
         });
         if(selectedGame === 'omi') { data.players.forEach((p, idx) => { let localId = turnOrder[(4 + idx - myIndex) % 4]; botNames[localId] = p; if(localId !== 'p1') document.getElementById(localId + '-name').innerText = p; }); }
         for(let i=data.players.length; i<data.maxPlayers; i++) { qList.innerHTML += `<div class="queue-item empty">Waiting for player...</div>`; }
-        if(isHost && data.players.length === data.maxPlayers) { document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "කාමරය පිරී ඇත! ආරම්භ කරන්න." : "Lobby Full! Ready to start."; document.getElementById('btnStartMulti').disabled = false; }
+        
+        let minPlayers = (selectedGame === 'shooter') ? 4 : data.maxPlayers;
+        if(isHost) {
+            if (data.players.length >= minPlayers) {
+                document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "ආරම්භ කිරීමට සූදානම්!" : "Ready to start!"; 
+                document.getElementById('btnStartMulti').disabled = false; 
+            } else {
+                document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "ක්‍රීඩකයින් එක්වන තෙක් රැඳී සිටින්න..." : "Waiting for players to join..."; 
+                document.getElementById('btnStartMulti').disabled = true; 
+            }
+        }
+
         if(data.status === "playing" && !isHost && document.getElementById('waiting-modal').style.display === 'flex') { startMultiplayerGameClient(); }
         if(data.chat) { const msgDiv = document.getElementById('roomChatMessages'); msgDiv.innerHTML = ''; data.chat.forEach(msg => { let isMe = msg.user === userProfile.alias; msgDiv.innerHTML += `<div class="chat-msg ${isMe ? 'self' : ''}"><div class="chat-user">${msg.user}</div><div>${msg.text}</div></div>`; }); msgDiv.scrollTop = msgDiv.scrollHeight; }
     });
@@ -186,17 +196,24 @@ function startMultiplayerGameClient() {
 }
 
 window.closeWaitingModal = function() { if(currentRoomCode) { if(isHost) db.ref("rooms/" + currentRoomCode).remove(); db.ref("rooms/" + currentRoomCode).off(); } document.getElementById('waiting-modal').style.display = 'none'; document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('room-chat-sidebar').style.display = 'none'; };
-window.quitToLobby = function() { isGameOver = true; team1Kola = 0; team2Kola = 0; activeSeporu = 0; tttActive = false; shooterActive = false; if (crushInterval) clearInterval(crushInterval); if(currentRoomCode) { if(isHost) db.ref("rooms/" + currentRoomCode).remove(); db.ref("rooms/" + currentRoomCode).off(); } document.getElementById('game-screen').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'none'; document.getElementById('shooter-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; document.getElementById('room-chat-sidebar').style.display = 'none'; };
 
-// ROOM CHAT HUD WITH MINIMIZE FEATURE
+window.quitToLobby = function() { 
+    isGameOver = true; team1Kola = 0; team2Kola = 0; activeSeporu = 0; tttActive = false; shooterActive = false; 
+    if (crushInterval) clearInterval(crushInterval); 
+    if(currentRoomCode) { 
+        if(isHost) {
+            db.ref("rooms/" + currentRoomCode).remove(); 
+        } else if (selectedGame === 'shooter') {
+            db.ref("rooms/" + currentRoomCode + "/shooterState/" + botNames.p1).remove();
+        }
+        db.ref("rooms/" + currentRoomCode).off(); 
+    } 
+    document.getElementById('game-screen').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'none'; document.getElementById('shooter-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; document.getElementById('room-chat-sidebar').style.display = 'none'; 
+};
+
 let roomChatMinimized = false;
 function openRoomChat(code) { document.getElementById('room-chat-sidebar').style.display = 'flex'; document.getElementById('roomChatCodeDisplay').innerText = code.toUpperCase(); document.getElementById('roomChatMessages').innerHTML = ''; }
-window.toggleRoomChat = function() {
-    roomChatMinimized = !roomChatMinimized;
-    document.getElementById('roomChatBody').style.display = roomChatMinimized ? 'none' : 'flex';
-    document.getElementById('chatMinimizeBtn').innerText = roomChatMinimized ? '□' : '_';
-    document.getElementById('room-chat-sidebar').style.height = roomChatMinimized ? 'auto' : '380px';
-}
+window.toggleRoomChat = function() { roomChatMinimized = !roomChatMinimized; document.getElementById('roomChatBody').style.display = roomChatMinimized ? 'none' : 'flex'; document.getElementById('chatMinimizeBtn').innerText = roomChatMinimized ? '□' : '_'; document.getElementById('room-chat-sidebar').style.height = roomChatMinimized ? 'auto' : '380px'; }
 window.toggleEmojiPicker = function() { const picker = document.getElementById('emoji-picker'); picker.style.display = picker.style.display === 'none' ? 'flex' : 'none'; }
 window.insertEmoji = function(emoji) { const input = document.getElementById('roomChatInput'); input.value += emoji; toggleEmojiPicker(); input.focus(); }
 window.sendRoomMessage = function() { const input = document.getElementById('roomChatInput'); if(!input.value || !currentRoomCode) return; db.ref("rooms/" + currentRoomCode + "/chat").once("value", snap => { let chat = snap.val() || []; chat.push({ user: userProfile.alias, text: input.value }); db.ref("rooms/" + currentRoomCode + "/chat").set(chat); input.value = ''; }); }
@@ -219,17 +236,29 @@ function initShooter() {
         sBullets.push(b); if(isMultiplayer && currentRoomCode) db.ref("rooms/"+currentRoomCode+"/bullets").push(b);
     });
     
-    if(isMultiplayer && isHost && currentRoomCode) { db.ref("rooms/"+currentRoomCode+"/shooterKills").set({}); }
+    if(isMultiplayer && currentRoomCode) { 
+        if(isHost) db.ref("rooms/"+currentRoomCode+"/shooterKills").set({}); 
+        db.ref("rooms/"+currentRoomCode+"/shooterState/"+botNames.p1).onDisconnect().remove(); 
+    }
     requestAnimationFrame(shooterLoop);
 }
 
 function syncShooterFirebase() {
     if(!isMultiplayer || !currentRoomCode) return;
-    setInterval(() => { if(shooterActive && !localShooter.dead) db.ref("rooms/"+currentRoomCode+"/players/"+botNames.p1).set(localShooter); }, 50);
-    db.ref("rooms/"+currentRoomCode+"/players").on("value", snap => { if(snap.exists() && shooterActive) { let d = snap.val(); for(let p in d) { if(p !== botNames.p1) remoteShooters[p] = d[p]; } } });
+    setInterval(() => { if(shooterActive && !localShooter.dead) db.ref("rooms/"+currentRoomCode+"/shooterState/"+botNames.p1).set(localShooter); }, 50);
+    
+    db.ref("rooms/"+currentRoomCode+"/shooterState").on("value", snap => { 
+        if(snap.exists() && shooterActive) { 
+            let d = snap.val(); 
+            remoteShooters = {}; 
+            for(let p in d) { if(p !== botNames.p1) remoteShooters[p] = d[p]; } 
+        } else {
+            remoteShooters = {};
+        }
+    });
+    
     db.ref("rooms/"+currentRoomCode+"/bullets").on("child_added", snap => { let b = snap.val(); if(b.owner !== botNames.p1) sBullets.push(b); });
     
-    // Leaderboard Sync
     db.ref("rooms/"+currentRoomCode+"/shooterKills").on("value", snap => {
         if(snap.exists() && shooterActive) {
             shooterKills = snap.val();
@@ -266,7 +295,6 @@ function shooterLoop() {
         sCtx.fillStyle = "#ffd700"; sCtx.beginPath(); sCtx.arc(b.x, b.y, 4, 0, Math.PI*2); sCtx.fill();
         if(b.x < 0 || b.x > 800 || b.y < 0 || b.y > 500) { sBullets.splice(i,1); continue; }
         
-        // Accurate Hit Check
         if(b.owner !== botNames.p1 && !localShooter.dead && Math.hypot(b.x - localShooter.x, b.y - localShooter.y) < 20) {
             localShooter.hp -= 20; 
             document.getElementById('mainHealthBar').style.width = Math.max(0, localShooter.hp) + "%";
@@ -274,11 +302,10 @@ function shooterLoop() {
             
             if(localShooter.hp <= 0 && !localShooter.dead) { 
                 localShooter.dead = true; localShooter.hp = 0;
-                // Add Kill to Shooter
                 if(isMultiplayer && currentRoomCode) {
                     let currentKills = shooterKills[b.owner] || 0;
                     db.ref("rooms/"+currentRoomCode+"/shooterKills/"+b.owner).set(currentKills + 1);
-                    db.ref("rooms/"+currentRoomCode+"/players/"+botNames.p1).set(localShooter);
+                    db.ref("rooms/"+currentRoomCode+"/shooterState/"+botNames.p1).set(localShooter);
                 }
                 setTimeout(() => {
                     localShooter.hp = 100; localShooter.dead = false;
@@ -299,7 +326,7 @@ function drawShooter(x, y, color, name, hp) {
     sCtx.fillStyle = "#ff3366"; sCtx.fillRect(x-15, y-20, 30, 4); sCtx.fillStyle = "#00ff00"; sCtx.fillRect(x-15, y-20, 30 * (hp/100), 4);
 }
 
-// --- SWEET CRUSH FIX (REAL ICE LOCKS & BOMB POWERS) ---
+// --- SWEET CRUSH ---
 const crushGems = ['gem-red', 'gem-orange', 'gem-yellow', 'gem-green', 'gem-blue', 'gem-purple']; 
 let crushWidth = 8; let crushGrid = []; let crushScore = 0; let crushLevel = 1; let crushMoves = 30; let iceBlocks = []; let draggedCandy, replacedCandy; let crushInterval;
 
@@ -356,7 +383,6 @@ function triggerCrushAnim(indexes, createBombIndex = -1) {
     let brokeIce = false;
     let fullClearList = new Set(indexes);
 
-    // Expand deletion if a bomb is included
     indexes.forEach(idx => {
         if(crushGrid[idx].classList.contains('power-bomb') && idx !== createBombIndex) {
             let adj = [idx-9, idx-8, idx-7, idx-1, idx, idx+1, idx+7, idx+8, idx+9];
@@ -367,7 +393,7 @@ function triggerCrushAnim(indexes, createBombIndex = -1) {
     fullClearList.forEach(index => { 
         if(index === createBombIndex) {
             crushGrid[index].classList.add('power-bomb');
-            crushScore += 20; return; // Don't destroy the newly formed bomb
+            crushScore += 20; return; 
         }
 
         crushGrid[index].classList.add('crush-anim'); 
@@ -388,7 +414,7 @@ function triggerCrushAnim(indexes, createBombIndex = -1) {
 
 function checkRowForThree() { 
     for (let i = 0; i < 64; i++) { 
-        if(i%8 > 5) continue; // Out of bounds for horizontal 3
+        if(i%8 > 5) continue; 
         let rowOfThree = [i, i + 1, i + 2]; 
         let decidedClass = getGemClass(crushGrid[i]); 
         
@@ -470,10 +496,7 @@ let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '
 
 function syncOmiFromFirebase() {
     if(!isMultiplayer || !currentRoomCode || omiSynced) return; omiSynced = true;
-    
-    // Listen for manual round starts from Host
     db.ref("rooms/" + currentRoomCode + "/nextRound").on("value", snap => { if(snap.exists() && !isHost && document.getElementById('celebration-overlay').style.display === 'flex') { closeCelebrationForce(); } });
-    
     db.ref("rooms/" + currentRoomCode + "/omiDealer").on("value", snap => { if(snap.exists()) { window.currentAbsDealer = snap.val(); roundDealerIndex = (window.currentAbsDealer - myIndex + 4) % 4; trumpCallerId = turnOrder[(roundDealerIndex + 1) % 4]; updateRolesInUI(); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck").on("value", snap => { if(snap.exists() && !isHost) { fullDeck = snap.val(); document.getElementById('gameStatus').innerText = lang[currentLang].statusShuffle; let deckVis = document.getElementById('deck-visual'); deckVis.style.display = 'block'; deckVis.classList.add('shuffling'); setTimeout(() => { deckVis.classList.remove('shuffling'); let cutterId = turnOrder[(roundDealerIndex + 3) % 4]; updateActiveTurnUI(cutterId); if (cutterId === 'p1') { document.getElementById('gameStatus').innerText = lang[currentLang].myCutPrompt; document.getElementById('cut-selector').style.display = 'flex'; document.getElementById('cut-selector').style.justifyContent = 'center'; document.getElementById('cut-selector').style.gap = '10px'; } else { document.getElementById('gameStatus').innerText = isMultiplayer ? `Waiting for ${botNames[cutterId]}...` : botNames[cutterId] + lang[currentLang].statusCut; } }, 1500); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck2").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 3) % 4] !== 'p1') { fullDeck = snap.val(); executeCutLocal(); } });
@@ -491,9 +514,8 @@ function triggerCelebration(type, winningTeam, tokensEarned = 0) {
     else if (type === 'seporu') { title.innerText = lang[currentLang].celebSeporu; subtitle.innerText = lang[currentLang].celebSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; } 
     else if (type === 'double_seporu') { title.innerText = lang[currentLang].celebDblSeporu; subtitle.innerText = lang[currentLang].celebDblSeporuSub; btn.innerText = lang[currentLang].btnCont; gif.src = "https://media.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; } 
 
-    // HOST MANUAL ROUND START LOGIC
     if(isMultiplayer && !isGameOver) {
-        document.getElementById('celeb-btn').style.display = 'none'; // Hide default continue
+        document.getElementById('celeb-btn').style.display = 'none'; 
         if(isHost) document.getElementById('btnHostNextRound').style.display = 'block';
         else subtitle.innerHTML += "<br><br><span style='color:#33b5e5; font-size:0.9rem;'>Waiting for Host to start next round...</span>";
     } else {
@@ -509,7 +531,7 @@ window.hostTriggerNextRound = function() {
 }
 
 window.closeCelebration = function() { 
-    if(isMultiplayer && !isGameOver) return; // Block manual close in MP
+    if(isMultiplayer && !isGameOver) return; 
     closeCelebrationForce(); 
 };
 
