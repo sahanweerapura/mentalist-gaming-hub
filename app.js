@@ -55,6 +55,7 @@ const lang = {
 
 let currentLang = 'en'; let selectedGame = ''; let isMultiplayer = false; let isOwner = false;
 let userProfile = { alias: "", email: "", phone: "", points: 0 }; let currentLobbyMax = 4; let myIndex = 0; 
+let isGameOver = false;
 
 // --- 1. FIREBASE CONNECTION ---
 const firebaseConfig = {
@@ -149,18 +150,17 @@ window.joinRoom = function() {
         if(snap.exists()) {
             let roomData = snap.val();
             
-            if (roomData.players.includes(botNames.p1)) {
-                alert("This Alias is already taken in that room! Please change your Alias in the code or use a different name.");
+            // STRICT DUPLICATE ALIAS CHECK
+            if (roomData.players && roomData.players.includes(botNames.p1)) {
+                alert("This Alias is already taken in that room! Please return to the lobby and wait, or use a different name.");
                 return; 
             }
 
             if(roomData.players.length < roomData.maxPlayers && roomData.status === "waiting") {
                 isHost = false; currentRoomCode = code; selectedGame = roomData.game; currentLobbyMax = roomData.maxPlayers;
                 
-                if (!roomData.players.includes(botNames.p1)) {
-                    roomData.players.push(botNames.p1); 
-                    db.ref("rooms/" + code + "/players").set(roomData.players); 
-                }
+                roomData.players.push(botNames.p1); 
+                db.ref("rooms/" + code + "/players").set(roomData.players); 
                 
                 document.getElementById('room-modal').style.display = 'none'; let l = lang[currentLang];
                 document.getElementById('waitingTitle').innerText = l.waitingTitleJoin; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingSub').innerText = l.waitingSubJoin; document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "සම්බන්ධ විය. Host ආරම්භ කරන තෙක් රැඳී සිටින්න." : "Connected. Waiting for Host to start.";
@@ -250,12 +250,29 @@ window.quitToLobby = function() {
     document.getElementById('game-screen').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'none'; document.getElementById('shooter-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; document.getElementById('room-chat-sidebar').style.display = 'none'; 
 };
 
+// ROOM CHAT HUD WITH MINIMIZE FEATURE
 let roomChatMinimized = false;
 function openRoomChat(code) { document.getElementById('room-chat-sidebar').style.display = 'flex'; document.getElementById('roomChatCodeDisplay').innerText = code.toUpperCase(); document.getElementById('roomChatMessages').innerHTML = ''; }
 window.toggleRoomChat = function() { roomChatMinimized = !roomChatMinimized; document.getElementById('roomChatBody').style.display = roomChatMinimized ? 'none' : 'flex'; document.getElementById('chatMinimizeBtn').innerText = roomChatMinimized ? '□' : '_'; document.getElementById('room-chat-sidebar').style.height = roomChatMinimized ? 'auto' : '380px'; }
 window.toggleEmojiPicker = function() { const picker = document.getElementById('emoji-picker'); picker.style.display = picker.style.display === 'none' ? 'flex' : 'none'; }
 window.insertEmoji = function(emoji) { const input = document.getElementById('roomChatInput'); input.value += emoji; toggleEmojiPicker(); input.focus(); }
 window.sendRoomMessage = function() { const input = document.getElementById('roomChatInput'); if(!input.value || !currentRoomCode) return; db.ref("rooms/" + currentRoomCode + "/chat").once("value", snap => { let chat = snap.val() || []; chat.push({ user: userProfile.alias, text: input.value }); db.ref("rooms/" + currentRoomCode + "/chat").set(chat); input.value = ''; }); }
+
+// --- FIREWORKS SYSTEM ---
+function generateFireworks() {
+    const container = document.getElementById('fireworks-container');
+    if(!container) return;
+    container.innerHTML = '';
+    for(let i=0; i<40; i++) {
+        let p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.backgroundColor = ['#ff3366', '#33b5e5', '#ffd700', '#00ff00'][Math.floor(Math.random()*4)];
+        p.style.animationDuration = (Math.random() * 1 + 1) + 's';
+        p.style.animationDelay = (Math.random() * 0.5) + 's';
+        container.appendChild(p);
+    }
+}
 
 // --- NEON BLASTER ARENA (SHOOTER) DEATHMATCH ---
 let shooterActive = false; let sCanvas, sCtx; let localShooter = { x: 400, y: 250, hp: 100, dead: false, color: '#33b5e5' }; let remoteShooters = {}; let sBullets = []; let sKeys = {}; let mx = 400, my = 250; let lastShot = 0; let shooterKills = {};
@@ -323,7 +340,6 @@ function shooterLoop() {
     }
     
     sCtx.clearRect(0,0,800,500);
-    
     sCtx.strokeStyle = "rgba(51, 181, 229, 0.1)"; sCtx.lineWidth = 1;
     for(let i=0; i<800; i+=50) { sCtx.beginPath(); sCtx.moveTo(i,0); sCtx.lineTo(i,500); sCtx.stroke(); sCtx.beginPath(); sCtx.moveTo(0,i); sCtx.lineTo(800,i); sCtx.stroke(); }
     
@@ -358,12 +374,10 @@ function shooterLoop() {
     }
 
     if(localShooter.dead) {
-        sCtx.fillStyle = "rgba(255, 0, 0, 0.3)";
-        sCtx.fillRect(0,0,800,500);
+        sCtx.fillStyle = "rgba(255, 0, 0, 0.3)"; sCtx.fillRect(0,0,800,500);
         sCtx.fillStyle = "#fff"; sCtx.font = "bold 30px Rajdhani"; sCtx.textAlign = "center";
         sCtx.fillText("SYSTEM FAILURE - REBOOTING...", 400, 250);
     }
-
     requestAnimationFrame(shooterLoop);
 }
 
@@ -538,7 +552,7 @@ function botTTT() { if(!tttActive) return; let emptySpots = board.map((val, idx)
 function renderTTT() { const cells = document.querySelectorAll('.ttt-cell'); cells.forEach((cell, i) => { cell.innerText = board[i]; cell.className = "ttt-cell " + (board[i] === "X" ? "ttt-x" : (board[i] === "O" ? "ttt-o" : "")); }); }
 function checkTTTWin() { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for (let w of wins) { if (board[w[0]] && board[w[0]] === board[w[1]] && board[w[1]] === board[w[2]]) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = board[w[0]] === "X" ? lang[currentLang].tttWinX : lang[currentLang].tttWinO; if(!isMultiplayer && board[w[0]] === "X") addGlobalPoints(15); else if (isMultiplayer && board[w[0]] === (isHost ? "X" : "O")) addGlobalPoints(15); setTimeout(initTTT, 3000); return; } } if (!board.includes("")) { tttActive = false; tttPlayerTurn = false; document.getElementById('tttStatus').innerText = lang[currentLang].tttDraw; setTimeout(initTTT, 3000); } }
 
-// --- OMI GAME ENGINE (FIXED SYNC & SCORING) ---
+// --- OMI GAME ENGINE WITH MANUAL HOST SYNC & PUSH QUEUE ---
 const suits = ['♠', '♥', '♣', '♦']; const values = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']; const cardPower = { '7':7, '8':8, '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14 }; const turnOrder = ['p1', 'p4', 'p3', 'p2']; const botNames = { p1: "You", p2: "Bot 2", p3: "Bot 3", p4: "Bot 4" }; 
 let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '', currentTrick = [], ledSuit = ''; let roundDealerIndex = 0, currentTurnIndex = 0; let team1Tricks = 0, team2Tricks = 0, team1Kola = 0, team2Kola = 0, trumpCallerId = ''; let activeSeporu = 0; let omiSynced = false;
 
@@ -550,7 +564,7 @@ function syncOmiFromFirebase() {
     db.ref("rooms/" + currentRoomCode + "/omiDeck2").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 3) % 4] !== 'p1') { fullDeck = snap.val(); executeCutLocal(); } });
     db.ref("rooms/" + currentRoomCode + "/omiTrump").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 1) % 4] !== 'p1') setTrumpLocal(snap.val()); });
     
-    // FIXED: Using .on("child_added") queue to prevent dropped trick moves
+    // THE PUSH QUEUE FIX FOR SEPORU DESYNC
     db.ref("rooms/" + currentRoomCode + "/omiMoves").on("child_added", snap => { 
         if(snap.exists()) { 
             let move = snap.val(); 
@@ -655,8 +669,7 @@ function startLifecycle() {
     } else {
         if (isHost) {
             db.ref("rooms/" + currentRoomCode + "/omiDeck2").remove(); db.ref("rooms/" + currentRoomCode + "/omiTrump").remove(); 
-            db.ref("rooms/" + currentRoomCode + "/omiMoves").remove(); // Clears queue for fresh round
-            
+            db.ref("rooms/" + currentRoomCode + "/omiMoves").remove(); 
             fullDeck = []; suits.forEach(s => values.forEach(v => fullDeck.push({suit: s, value: v, color: (s==='♥'||s==='♦')?'red':'black'}))); fullDeck.sort(() => Math.random() - 0.5); 
             let absDealer = window.currentAbsDealer !== undefined ? window.currentAbsDealer : Math.floor(Math.random() * 4);
             db.ref("rooms/" + currentRoomCode + "/omiDealer").set(absDealer); db.ref("rooms/" + currentRoomCode + "/omiDeck").set(fullDeck);
@@ -692,7 +705,7 @@ function playNextTurn() {
 window.humanPlay = function(idx) { 
     if (turnOrder[currentTurnIndex] !== 'p1') return; if (!getValidCards(hands['p1']).includes(hands['p1'][idx])) return; 
     let playedCard = hands['p1'].splice(idx, 1)[0]; executePlacement('p1', playedCard); 
-    // FIXED: Using .push() prevents race condition overwrites!
+    
     if(isMultiplayer) db.ref("rooms/" + currentRoomCode + "/omiMoves").push({ firebaseIdx: myIndex, card: playedCard, timestamp: Date.now() });
     currentTurnIndex = (currentTurnIndex + 1) % 4; playNextTurn(); 
 };
@@ -711,7 +724,7 @@ function evaluateTrickWinner() {
 function evaluateMatchPoints() {
     let roundWinner = 0; let earnedTokens = 0; let isSeporu = false; let isDoubleSeporu = false;
     
-    // FIXED: True Omi Scoring based on who called Trump
+    // OFFICIAL OMI SCORING LOGIC
     let callerRelativeId = trumpCallerId; 
     let callerTeam = (callerRelativeId === 'p1' || callerRelativeId === 'p3') ? 1 : 2;
 
