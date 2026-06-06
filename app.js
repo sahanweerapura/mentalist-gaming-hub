@@ -13,17 +13,18 @@ const lang = {
         roomModalTitle: "MULTIPLAYER ROOM", btnCreateRoom: "CREATE CUSTOM ROOM", txtOr: "— OR —", roomCodeInputPH: "ENTER ROOM CODE", btnJoinRoom: "JOIN ROOM",
         waitingTitleJoin: "JOINED ROOM", waitingSubJoin: "Waiting for host to start...",
         waitingTitleCreate: "ROOM LOBBY", waitingSubCreate: "Share this code with your friends:", waitingStatus: "Waiting for players to join...", btnStartMulti: "START GAME", btnCancelWait: "LEAVE ROOM",
-        txtWaitingPlayers: "Players Connected",
+        txtWaitingPlayers: "Players Connected", txtPublicRooms: "PUBLIC LOBBIES",
         txtChatRooms: "COMMUNITY CHATS", btnCreateChat: "+ CREATE ROOM", txtCreateChatTitle: "CREATE CHAT ROOM", btnConfirmChat: "CREATE", btnCancelChat: "CANCEL",
         txtChatLockTitle: "PRIVATE ROOM", txtChatLockSub: "Enter password to join.", btnVerifyChat: "JOIN", btnCancelPass: "CANCEL",
         chatDefHeader: "Select a room to join the conversation.", btnSendChat: "SEND",
         txtRoomChatTitle: "ROOM CHAT", roomChatPH: "Message...",
-        t1Label: "TEAM A", t2Label: "TEAM B", txtKata: "Tricks", txtTrumpBadge: "TRUMP", lblPart: "Team A", lblT2: "Team B", roleDealer: "(DEALER)",
+        t1Label: "TEAM A", t2Label: "TEAM B", txtKata: "Tricks", txtKola: "Tokens", txtTrumpBadge: "TRUMP", lblPart: "Team A", lblT2: "Team B", roleDealer: "(DEALER)",
         statusWait: "Awaiting Players...", statusShuffle: "Shuffling deck...", statusCut: " is cutting...", myCutPrompt: "Your turn to Cut or Decline.", btnCut: "CUT DECK", btnDecline: "DECLINE",
         statusDeal: "Dealing Phase 1...", statusTrump: "Select Trump Suit", trumpTitle: "SELECT TRUMP", botTrumpPrompt: " is selecting Trump...", statusDeal2: "Dealing Phase 2...", statusPlay: "YOUR TURN! PLAY A CARD.", botThink: " is calculating...",
         t1Win: "TEAM A SECURES TRICK!", t2Win: "TEAM B SECURES TRICK!", gameOver: "MATCH TERMINATED", celebTokens: "TOKENS EARNED!", celebWinRnd: " secured the round!", btnCont: "CONTINUE",
         celebChamp: "🏆 MATCH CHAMPIONS 🏆", celebWinGame: "ABSOLUTE VICTORY FOR ", btnAgain: "PLAY AGAIN", celebSeporu: "SEPORU! (TIE)", celebSeporuSub: "No tokens awarded. Next round is worth +1 Bonus Token!", celebDblSeporu: "SEPORU CANCELLED!", celebDblSeporuSub: "Double Tie! The bonus token has been cancelled.",
-        tttYourTurn: "Your Turn! (X)", tttBotTurn: "Bot is thinking... (O)", tttWinX: "YOU WIN!", tttWinO: "BOT WINS!", tttDraw: "IT'S A DRAW!", txtCrushScore: "MATCH SCORE", txtCrushMoves: "MOVES", txtCrushLvl: "LEVEL"
+        tttYourTurn: "Your Turn! (X)", tttBotTurn: "Bot is thinking... (O)", tttWinX: "YOU WIN!", tttWinO: "BOT WINS!", tttDraw: "IT'S A DRAW!", txtCrushScore: "MATCH SCORE", txtCrushMoves: "MOVES", txtCrushLvl: "LEVEL",
+        winMsg: "Great! Yes, you won!", winSub: "You won [X] tokens this round!", loseMsg: "You lost...", loseSub: "You lost [X] tokens this round."
     },
     si: { 
         title: "MENTALIST LIVE <span class='neon-pink'>හබ්</span>", toggleBtn: "English", 
@@ -39,17 +40,18 @@ const lang = {
         roomModalTitle: "ඔන්ලයින් කාමරය", btnCreateRoom: "නව කාමරයක් සාදන්න", txtOr: "— හෝ —", roomCodeInputPH: "කේතය ඇතුලත් කරන්න", btnJoinRoom: "එක්වන්න",
         waitingTitleJoin: "කාමරයට එක්විය", waitingSubJoin: "ක්‍රීඩාව ආරම්භ කරන තෙක් රැඳී සිටින්න...",
         waitingTitleCreate: "කාමර ලොබිය", waitingSubCreate: "ඔබේ මිතුරන් සමඟ මෙම කේතය බෙදාගන්න:", waitingStatus: "ක්‍රීඩකයින් එක්වන තෙක් රැඳී සිටින්න...", btnStartMulti: "ක්‍රීඩාව අරඹන්න", btnCancelWait: "ඉවත් වන්න",
-        txtWaitingPlayers: "සම්බන්ධිත ක්‍රීඩකයින්",
+        txtWaitingPlayers: "සම්බන්ධිත ක්‍රීඩකයින්", txtPublicRooms: "පොදු කාමර",
         txtChatRooms: "චැට් කාමර", btnCreateChat: "+ කාමරයක් සාදන්න", txtCreateChatTitle: "නව චැට් එකක්", btnConfirmChat: "සාදන්න", btnCancelChat: "අවලංගු කරන්න",
         txtChatLockTitle: "රහස්‍ය කාමරය", txtChatLockSub: "මුරපදය ඇතුලත් කරන්න.", btnVerifyChat: "එක්වන්න", btnCancelPass: "අවලංගු කරන්න",
         chatDefHeader: "කතාබස් කිරීමට කාමරයක් තෝරන්න.", btnSendChat: "යවන්න",
         txtRoomChatTitle: "කාමරයේ කතාබස්", roomChatPH: "පණිවිඩය...",
-        t1Label: "කණ්ඩායම A", t2Label: "කණ්ඩායම B", txtKata: "අත්", txtTrumpBadge: "තුරුම්පුව", lblPart: "කණ්ඩායම A", lblT2: "කණ්ඩායම B", roleDealer: "(බෙදන්නා)",
+        t1Label: "කණ්ඩායම A", t2Label: "කණ්ඩායම B", txtKata: "අත්", txtKola: "කැටකොල", txtTrumpBadge: "තුරුම්පුව", lblPart: "කණ්ඩායම A", lblT2: "කණ්ඩායම B", roleDealer: "(බෙදන්නා)",
         statusWait: "රැඳී සිටින්න...", statusShuffle: "කාඩ්පත් කලවම් කරමින්...", statusCut: " කුට්ටිය කපමින්...", myCutPrompt: "ඔබේ වාරය: කපන්න හෝ ප්‍රතික්ෂේප කරන්න.", btnCut: "කපන්න", btnDecline: "එපා",
         statusDeal: "පළමු අදියර බෙදමින්...", statusTrump: "තුරුම්පුව තෝරන්න", trumpTitle: "තුරුම්පුව කුමක්ද?", botTrumpPrompt: " තුරුම්පුව තෝරමින්...", statusDeal2: "දෙවන අදියර බෙදමින්...", statusPlay: "ඔබේ වාරය! කාඩ්පතක් දමන්න.", botThink: " සිතමින් සිටී...",
         t1Win: "කණ්ඩායම A වටය දිනුවා!", t2Win: "කණ්ඩායම B වටය දිනුවා!", gameOver: "තරගය අවසන්", celebTokens: "අඩෝ උඹල කැටකොල දින්නා...!!", celebWinRnd: " මෙම වටය ජයගත්තා!", btnCont: "ඉදිරියට",
         celebChamp: "🏆 තරගයේ ශූරයින් 🏆", celebWinGame: "විශිෂ්ට ජයග්‍රහණයක්! දිනුවේ ", btnAgain: "නැවත ක්‍රීඩා කරන්න", celebSeporu: "සෙපෝරුයි!", celebSeporuSub: "කිසිවෙකුට කැටකොල නැත. ඊළඟ වටයට අමතර +1 එකතු වේ!", celebDblSeporu: "සෙපෝරුට සෙපෝරු කැපුණා!", celebDblSeporuSub: "දිගටම සෙපෝරුයි! අමතර කැටකොලය අවලංගු විය.",
-        tttYourTurn: "ඔබේ වාරය! (X)", tttBotTurn: "පරිගණකය සිතමින්... (O)", tttWinX: "ඔබ දිනුවා!", tttWinO: "පරිගණකය දිනුවා!", tttDraw: "තරගය සමයි!", txtCrushScore: "ලකුණු", txtCrushMoves: "වාර ගණන", txtCrushLvl: "මට්ටම"
+        tttYourTurn: "ඔබේ වාරය! (X)", tttBotTurn: "පරිගණකය සිතමින්... (O)", tttWinX: "ඔබ දිනුවා!", tttWinO: "පරිගණකය දිනුවා!", tttDraw: "තරගය සමයි!", txtCrushScore: "ලකුණු", txtCrushMoves: "වාර ගණන", txtCrushLvl: "මට්ටම",
+        winMsg: "නියමයි! ඔබ දිනුවා!", winSub: "ඔබට මෙම වටයෙන් කැටකොල [X] ක් ලැබුණා!", loseMsg: "ඔබ පරාදයි...", loseSub: "ඔබට මෙම වටයෙන් කැටකොල [X] ක් අහිමි වුණා."
     }
 };
 
@@ -82,12 +84,15 @@ function toggleLanguage() {
     document.getElementById('roomModalTitle').innerText = l.roomModalTitle; document.getElementById('btnCreateRoom').innerText = l.btnCreateRoom; document.getElementById('txtOr').innerText = l.txtOr; document.getElementById('roomCodeInput').placeholder = l.roomCodeInputPH; document.getElementById('btnJoinRoom').innerText = l.btnJoinRoom; document.getElementById('btnCancelRoom').innerText = l.btnCancel; document.getElementById('btnStartMulti').innerText = l.btnStartMulti; document.getElementById('btnCancelWait').innerText = l.btnCancelWait; document.getElementById('txtWaitingPlayers').innerHTML = `${l.txtWaitingPlayers} <span id="queueCount">1</span>/<span id="queueMax">${currentLobbyMax}</span>`;
     document.getElementById('txtChatRooms').innerText = l.txtChatRooms; document.getElementById('btnCreateChat').innerText = l.btnCreateChat; document.getElementById('txtCreateChatTitle').innerText = l.txtCreateChatTitle; document.getElementById('btnConfirmChat').innerText = l.btnConfirmChat; document.getElementById('btnCancelChat').innerText = l.btnCancelChat; document.getElementById('txtChatLockTitle').innerText = l.txtChatLockTitle; document.getElementById('txtChatLockSub').innerText = l.txtChatLockSub; document.getElementById('btnVerifyChat').innerText = l.btnVerifyChat; document.getElementById('btnCancelPass').innerText = l.btnCancelPass; document.getElementById('btnSendChat').innerText = l.btnSendChat; if(!activeChatRoomId) document.getElementById('chatHeader').innerText = l.chatDefHeader;
     document.getElementById('txtRoomChatTitle').innerText = l.txtRoomChatTitle; document.getElementById('roomChatInput').placeholder = l.roomChatPH; document.getElementById('btnRoomSendChat').innerText = l.btnSendChat;
+    document.getElementById('txtPublicRooms').innerText = l.txtPublicRooms;
     
     document.getElementById('t1Label').innerText = l.t1Label; document.getElementById('t2Label').innerText = l.t2Label; 
     document.getElementById('lblPart').innerText = l.lblPart; document.getElementById('lblT1').innerText = l.lblPart; 
     document.getElementById('lblT2A').innerText = l.lblT2; document.getElementById('lblT2B').innerText = l.lblT2; 
 
-    ['txtKata1', 'txtKata2'].forEach(id => document.getElementById(id).innerText = l.txtKata); document.getElementById('txtTrumpBadge').innerText = l.txtTrumpBadge; document.getElementById('btnCut').innerText = l.btnCut; document.getElementById('btnDecline').innerText = l.btnDecline; document.getElementById('trumpTitle').innerText = l.trumpTitle; document.getElementById('txtCrushScore').innerText = l.txtCrushScore; document.getElementById('txtCrushMoves').innerText = l.txtCrushMoves; document.getElementById('txtCrushLvl').innerText = l.txtCrushLvl;
+    ['txtKata1', 'txtKata2'].forEach(id => document.getElementById(id).innerText = l.txtKata); 
+    ['txtKola1', 'txtKola2'].forEach(id => document.getElementById(id).innerText = l.txtKola); 
+    document.getElementById('txtTrumpBadge').innerText = l.txtTrumpBadge; document.getElementById('btnCut').innerText = l.btnCut; document.getElementById('btnDecline').innerText = l.btnDecline; document.getElementById('trumpTitle').innerText = l.trumpTitle; document.getElementById('txtCrushScore').innerText = l.txtCrushScore; document.getElementById('txtCrushMoves').innerText = l.txtCrushMoves; document.getElementById('txtCrushLvl').innerText = l.txtCrushLvl;
     updateRolesInUI(); 
     if(tttActive) { let mySymbol = isHost ? "X" : "O"; document.getElementById('tttStatus').innerText = board.includes("X") || board.includes("O") ? (tttPlayerTurn ? (currentLang==='si'?`ඔබේ වාරය! (${mySymbol})`:`Your Turn! (${mySymbol})`) : (currentLang==='si'?"ප්‍රතිවාදියාගේ වාරය...":"Waiting for Opponent...")) : l.tttYourTurn; }
 }
@@ -104,26 +109,48 @@ function loginUser(alias, email, phone) {
     let lowerName = alias.toLowerCase(); if(lowerName.includes('mentalist') || lowerName.includes('sahan')) isOwner = true; 
     botNames.p1 = alias; document.getElementById('p1-name').innerText = alias; document.getElementById('profileName').innerText = alias.toUpperCase(); 
     document.getElementById('login-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; 
-    initPresence(); initGlobalChatSync(); updateCareerUI(); toggleLanguage(); toggleLanguage(); 
+    initPresence(); initGlobalChatSync(); initPublicRoomsSync(); updateCareerUI(); toggleLanguage(); toggleLanguage(); 
 }
 
-// --- 4. GLOBAL FIREBASE CHAT SYNC ---
+// --- 4. GLOBAL FIREBASE CHAT & PUBLIC ROOMS SYNC ---
 let chatRooms = []; let activeChatRoomId = null; let pendingRoomId = null;
 function initGlobalChatSync() { db.ref("globalChatRooms").on("value", snap => { if(snap.exists()) { chatRooms = snap.val(); chatRooms.forEach(r => r.messages = r.messages || []); renderChatRooms(); if(activeChatRoomId) renderMessages(); } else { chatRooms = [{ id: 1, name: "General Lobby", isLocked: false, password: "", messages: [{user: "System", text: "Welcome to Mentalist Live Hub!", isAdmin: true}] }]; db.ref("globalChatRooms").set(chatRooms); } }); }
 function renderChatRooms() { const list = document.getElementById('chatRoomList'); list.innerHTML = ''; chatRooms.forEach(room => { let lockIcon = room.isLocked ? "🔒" : "💬"; list.innerHTML += `<div class="chat-room-item" onclick="attemptJoinChat(${room.id})"><span>${lockIcon} ${room.name}</span><span style="font-size:0.8rem; color:#aaa;">${room.messages.length} msgs</span></div>`; }); }
 window.openCreateChatModal = function() { document.getElementById('newChatName').value = ''; document.getElementById('newChatPassword').value = ''; document.getElementById('create-chat-modal').style.display = 'flex'; }
 window.confirmCreateChat = function() { let name = document.getElementById('newChatName').value; let pass = document.getElementById('newChatPassword').value; if(!name) return; let newRoom = { id: Date.now(), name: name, isLocked: pass.length > 0, password: pass, messages: [] }; chatRooms.push(newRoom); db.ref("globalChatRooms").set(chatRooms); document.getElementById('create-chat-modal').style.display = 'none'; attemptJoinChat(newRoom.id); }
+window.closeChatModal = function() { document.getElementById('create-chat-modal').style.display = 'none'; document.getElementById('newChatName').value = ''; document.getElementById('newChatPassword').value = ''; }
 window.attemptJoinChat = function(id) { let room = chatRooms.find(r => r.id === id); if(room.isLocked && !isOwner) { pendingRoomId = id; document.getElementById('joinChatPassword').value = ''; document.getElementById('chat-password-modal').style.display = 'flex'; } else { openChatRoom(id); } }
 window.verifyChatPassword = function() { let room = chatRooms.find(r => r.id === pendingRoomId); let pass = document.getElementById('joinChatPassword').value; if(room.password === pass || isOwner) { document.getElementById('chat-password-modal').style.display = 'none'; openChatRoom(room.id); } else { alert(currentLang === 'si' ? "මුරපදය වැරදියි!" : "Incorrect Password!"); } }
+window.closeChatPassModal = function() { document.getElementById('chat-password-modal').style.display = 'none'; document.getElementById('joinChatPassword').value = ''; }
 function openChatRoom(id) { activeChatRoomId = id; let room = chatRooms.find(r => r.id === id); document.getElementById('chatHeader').innerText = room.name + (room.isLocked ? " 🔒" : ""); document.getElementById('chatInput').disabled = false; document.getElementById('btnSendChat').disabled = false; renderMessages(); }
 function renderMessages() { if(!activeChatRoomId) return; let room = chatRooms.find(r => r.id === activeChatRoomId); const msgDiv = document.getElementById('chatMessages'); msgDiv.innerHTML = ''; room.messages.forEach(m => { let isMe = m.user === botNames.p1; let adminTag = m.isAdmin ? `<span class="admin-badge">ADMIN</span>` : ""; msgDiv.innerHTML += `<div class="chat-msg ${isMe ? 'self' : ''} ${m.isAdmin ? 'admin' : ''}"><div class="chat-user">${m.user} ${adminTag}</div><div>${m.text}</div></div>`; }); msgDiv.scrollTop = msgDiv.scrollHeight; }
 window.sendChatMessage = function() { let input = document.getElementById('chatInput'); if(!input.value || !activeChatRoomId) return; let roomIdx = chatRooms.findIndex(r => r.id === activeChatRoomId); chatRooms[roomIdx].messages.push({ user: botNames.p1, text: input.value, isAdmin: isOwner }); db.ref("globalChatRooms/" + roomIdx).set(chatRooms[roomIdx]); input.value = ''; }
+
+function initPublicRoomsSync() {
+    db.ref("rooms").on("value", snap => {
+        if(document.getElementById('lobby-screen').style.display !== 'flex') return;
+        const pubList = document.getElementById('publicRoomsListContainer'); pubList.innerHTML = '';
+        if(snap.exists()) {
+            let rooms = snap.val();
+            for(let code in rooms) {
+                let r = rooms[code];
+                if(!r.isPrivate && r.status === "waiting") {
+                    let pCount = r.players ? r.players.filter(x => x !== "").length : 0;
+                    let icon = r.game === 'omi' ? '🎴' : (r.game === 'ttt' ? '❌⭕' : '🔫');
+                    pubList.innerHTML += `<div class="chat-room-item" onclick="joinSpecificRoom('${code}')"><span>${icon} ${r.game.toUpperCase()} - Host: ${r.host}</span><span style="color:#00ff00;">${pCount}/${r.maxPlayers}</span></div>`;
+                }
+            }
+        }
+        if(pubList.innerHTML === '') pubList.innerHTML = `<div style="color:#aaa; text-align:center; padding: 20px;">No public lobbies available right now.</div>`;
+    });
+}
+window.joinSpecificRoom = function(code) { document.getElementById('roomCodeInput').value = code; joinRoom(); }
 
 // --- 5. FIREBASE MATCHMAKING ---
 let currentRoomCode = null; let isHost = false;
 window.openModeModal = function(game) { selectedGame = game; document.getElementById('mode-modal').style.display = 'flex'; };
 window.closeModal = function() { document.getElementById('mode-modal').style.display = 'none'; };
-window.closeRoomModal = function() { document.getElementById('room-modal').style.display = 'none'; };
+window.closeRoomModal = function() { document.getElementById('room-modal').style.display = 'none'; document.getElementById('roomCodeInput').value = ''; document.getElementById('isPrivateRoom').checked = false; };
 
 window.launchGame = function(mode) {
     isMultiplayer = (mode === 'multi'); document.getElementById('mode-modal').style.display = 'none';
@@ -138,9 +165,15 @@ window.launchGame = function(mode) {
 window.createRoom = function() {
     currentLobbyMax = (selectedGame === 'omi') ? 4 : (selectedGame === 'shooter' ? 6 : 2); 
     let code = Math.random().toString(36).substring(2, 8).toUpperCase(); currentRoomCode = code; isHost = true;
-    db.ref("rooms/" + code).set({ game: selectedGame, host: botNames.p1, maxPlayers: currentLobbyMax, players: [botNames.p1], status: "waiting", chat: [] });
-    document.getElementById('room-modal').style.display = 'none'; let l = lang[currentLang];
-    document.getElementById('waitingTitle').innerText = l.waitingTitleCreate; document.getElementById('waitingSub').innerText = l.waitingSubCreate; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingStatus').innerText = l.waitingStatus;
+    let isPrivate = document.getElementById('isPrivateRoom').checked;
+    
+    // Fixed Size Array to map positions
+    let pArr = Array(currentLobbyMax).fill(""); pArr[0] = botNames.p1;
+    
+    db.ref("rooms/" + code).set({ game: selectedGame, host: botNames.p1, maxPlayers: currentLobbyMax, players: pArr, status: "waiting", chat: [], isPrivate: isPrivate });
+    document.getElementById('room-modal').style.display = 'none'; document.getElementById('roomCodeInput').value = ''; document.getElementById('isPrivateRoom').checked = false;
+    
+    let l = lang[currentLang]; document.getElementById('waitingTitle').innerText = l.waitingTitleCreate; document.getElementById('waitingSub').innerText = l.waitingSubCreate; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingStatus').innerText = l.waitingStatus;
     document.getElementById('btnStartMulti').style.display = 'block'; document.getElementById('btnStartMulti').disabled = true; document.getElementById('waiting-modal').style.display = 'flex'; openRoomChat(code); listenToFirebaseRoom(code);
 };
 
@@ -149,47 +182,94 @@ window.joinRoom = function() {
     db.ref("rooms/" + code).once("value", snap => {
         if(snap.exists()) {
             let roomData = snap.val();
+            let pArr = roomData.players || Array(roomData.maxPlayers).fill("");
             
-            // STRICT DUPLICATE ALIAS CHECK
-            if (roomData.players && roomData.players.includes(botNames.p1)) {
-                alert("This Alias is already taken in that room! Please return to the lobby and wait, or use a different name.");
-                return; 
+            if (pArr.includes(botNames.p1)) {
+                alert("This Alias is already in the room! Please wait or use a different name."); return; 
             }
 
-            if(roomData.players.length < roomData.maxPlayers && roomData.status === "waiting") {
+            let activeCount = pArr.filter(x => x !== "").length;
+            if(activeCount < roomData.maxPlayers && roomData.status === "waiting") {
                 isHost = false; currentRoomCode = code; selectedGame = roomData.game; currentLobbyMax = roomData.maxPlayers;
                 
-                roomData.players.push(botNames.p1); 
-                db.ref("rooms/" + code + "/players").set(roomData.players); 
+                let emptyIdx = pArr.findIndex(x => x === "");
+                if (emptyIdx > -1) { pArr[emptyIdx] = botNames.p1; db.ref("rooms/" + code + "/players").set(pArr); }
                 
-                document.getElementById('room-modal').style.display = 'none'; let l = lang[currentLang];
-                document.getElementById('waitingTitle').innerText = l.waitingTitleJoin; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingSub').innerText = l.waitingSubJoin; document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "සම්බන්ධ විය. Host ආරම්භ කරන තෙක් රැඳී සිටින්න." : "Connected. Waiting for Host to start.";
+                document.getElementById('room-modal').style.display = 'none'; document.getElementById('roomCodeInput').value = ''; document.getElementById('isPrivateRoom').checked = false;
+                let l = lang[currentLang]; document.getElementById('waitingTitle').innerText = l.waitingTitleJoin; document.getElementById('displayRoomCode').innerText = code; document.getElementById('waitingSub').innerText = l.waitingSubJoin; document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "සම්බන්ධ විය. Host ආරම්භ කරන තෙක් රැඳී සිටින්න." : "Connected. Waiting for Host to start.";
                 document.getElementById('btnStartMulti').style.display = 'none'; document.getElementById('waiting-modal').style.display = 'flex'; openRoomChat(code); listenToFirebaseRoom(code);
             } else { alert("Room is full or game has started!"); }
         } else { alert("Room code not found!"); }
     });
 };
 
+window.joinTeam = function(team) {
+    if(!currentRoomCode) return;
+    db.ref("rooms/" + currentRoomCode + "/players").once("value", snap => {
+        if(snap.exists()) {
+            let pArr = snap.val(); let oldIdx = pArr.indexOf(botNames.p1);
+            let targetIndices = (team === 'A') ? [0, 2] : [1, 3];
+            if(targetIndices.includes(oldIdx)) return; // Already there
+            
+            let emptyIdx = targetIndices.find(i => pArr[i] === "" || pArr[i] === undefined);
+            if(emptyIdx !== undefined) {
+                if(oldIdx > -1) pArr[oldIdx] = "";
+                pArr[emptyIdx] = botNames.p1;
+                db.ref("rooms/" + currentRoomCode + "/players").set(pArr);
+            } else { alert("That team is full!"); }
+        }
+    });
+};
+
 function listenToFirebaseRoom(code) {
     db.ref("rooms/" + code).on("value", snap => {
         let data = snap.val(); if(!data) return; 
-        document.getElementById('queueMax').innerText = data.maxPlayers; document.getElementById('queueCount').innerText = data.players.length;
-        const qList = document.getElementById('waitingPlayerList'); qList.innerHTML = '';
+        document.getElementById('queueMax').innerText = data.maxPlayers; 
         
-        let displayCount = 0;
-        data.players.forEach((p, idx) => {
-            if(displayCount >= data.maxPlayers) return; 
-            let icon = idx === 0 ? "👑" : "🎮"; let meTxt = p === botNames.p1 ? " (You)" : ""; qList.innerHTML += `<div class="queue-item"><div class="queue-avatar">${icon}</div> ${p}${meTxt}</div>`;
-            if(p === botNames.p1) { myIndex = idx; mySeat = 'p1'; }
-            displayCount++;
-        });
-        
-        if(selectedGame === 'omi') { data.players.forEach((p, idx) => { let localId = turnOrder[(4 + idx - myIndex) % 4]; botNames[localId] = p; if(localId !== 'p1') document.getElementById(localId + '-name').innerText = p; }); }
-        for(let i=displayCount; i<data.maxPlayers; i++) { qList.innerHTML += `<div class="queue-item empty">Waiting for player...</div>`; }
+        let pArr = data.players || Array(data.maxPlayers).fill("");
+        let actualPlayers = pArr.filter(x => x !== "");
+        document.getElementById('queueCount').innerText = actualPlayers.length;
+        myIndex = pArr.indexOf(botNames.p1);
+
+        // OMI TEAM SELECTION UI
+        if(selectedGame === 'omi') {
+            document.getElementById('standardQueue').style.display = 'none';
+            document.getElementById('teamSelection').style.display = 'flex';
+            
+            const formatName = (n, idx) => {
+                if(!n || n === "") return '<div style="color:#555; font-style:italic;">- Empty -</div>';
+                let icon = idx === 0 ? "👑" : "🎮"; let meTxt = n === botNames.p1 ? " <span style='color:#ffd700;'>(You)</span>" : "";
+                return `<div>${icon} ${n}${meTxt}</div>`;
+            }
+            document.getElementById('listTeamA').innerHTML = formatName(pArr[0], 0) + formatName(pArr[2], 2);
+            document.getElementById('listTeamB').innerHTML = formatName(pArr[1], 1) + formatName(pArr[3], 3);
+            
+            if(myIndex > -1) {
+                botNames.p3 = pArr[(myIndex + 2) % 4] || "Waiting...";
+                botNames.p4 = pArr[(myIndex + 1) % 4] || "Waiting...";
+                botNames.p2 = pArr[(myIndex + 3) % 4] || "Waiting...";
+                document.getElementById('p3-name').innerText = botNames.p3;
+                document.getElementById('p4-name').innerText = botNames.p4;
+                document.getElementById('p2-name').innerText = botNames.p2;
+            }
+        } else {
+            // Standard List UI
+            document.getElementById('teamSelection').style.display = 'none';
+            document.getElementById('standardQueue').style.display = 'block';
+            const qList = document.getElementById('waitingPlayerList'); qList.innerHTML = '';
+            let dispCount = 0;
+            pArr.forEach((p, idx) => {
+                if(p !== "") {
+                    let icon = idx === 0 ? "👑" : "🎮"; let meTxt = p === botNames.p1 ? " (You)" : ""; qList.innerHTML += `<div class="queue-item"><div class="queue-avatar">${icon}</div> ${p}${meTxt}</div>`;
+                    dispCount++;
+                }
+            });
+            for(let i=dispCount; i<data.maxPlayers; i++) { qList.innerHTML += `<div class="queue-item empty">Waiting for player...</div>`; }
+        }
         
         let minPlayers = (selectedGame === 'shooter') ? 4 : data.maxPlayers;
         if(isHost) {
-            if (data.players.length >= minPlayers) {
+            if (actualPlayers.length >= minPlayers) {
                 document.getElementById('waitingStatus').innerText = currentLang === 'si' ? "ආරම්භ කිරීමට සූදානම්!" : "Ready to start!"; 
                 document.getElementById('btnStartMulti').disabled = false; 
             } else {
@@ -213,14 +293,10 @@ function startMultiplayerGameClient() {
 
 window.closeWaitingModal = function() { 
     if(currentRoomCode) { 
-        if(isHost) {
-            db.ref("rooms/" + currentRoomCode).remove(); 
-        } else {
+        if(isHost) { db.ref("rooms/" + currentRoomCode).remove(); } 
+        else {
             db.ref("rooms/" + currentRoomCode + "/players").once("value", snap => {
-                if(snap.exists()) {
-                    let cleanedArr = snap.val().filter(n => n !== botNames.p1);
-                    db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr);
-                }
+                if(snap.exists()) { let cleanedArr = snap.val().map(n => n === botNames.p1 ? "" : n); db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr); }
             });
         }
         db.ref("rooms/" + currentRoomCode).off(); 
@@ -232,25 +308,18 @@ window.quitToLobby = function() {
     isGameOver = true; team1Kola = 0; team2Kola = 0; activeSeporu = 0; tttActive = false; shooterActive = false; 
     if (crushInterval) clearInterval(crushInterval); 
     if(currentRoomCode) { 
-        if(isHost) {
-            db.ref("rooms/" + currentRoomCode).remove(); 
-        } else {
+        if(isHost) { db.ref("rooms/" + currentRoomCode).remove(); } 
+        else {
             db.ref("rooms/" + currentRoomCode + "/players").once("value", snap => {
-                if(snap.exists()) {
-                    let cleanedArr = snap.val().filter(n => n !== botNames.p1);
-                    db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr);
-                }
+                if(snap.exists()) { let cleanedArr = snap.val().map(n => n === botNames.p1 ? "" : n); db.ref("rooms/" + currentRoomCode + "/players").set(cleanedArr); }
             });
-            if (selectedGame === 'shooter') {
-                db.ref("rooms/" + currentRoomCode + "/shooterState/" + botNames.p1).remove();
-            }
+            if (selectedGame === 'shooter') db.ref("rooms/" + currentRoomCode + "/shooterState/" + botNames.p1).remove();
         }
         db.ref("rooms/" + currentRoomCode).off(); 
     } 
     document.getElementById('game-screen').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'none'; document.getElementById('shooter-screen').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex'; document.getElementById('room-chat-sidebar').style.display = 'none'; 
 };
 
-// ROOM CHAT HUD WITH MINIMIZE FEATURE
 let roomChatMinimized = false;
 function openRoomChat(code) { document.getElementById('room-chat-sidebar').style.display = 'flex'; document.getElementById('roomChatCodeDisplay').innerText = code.toUpperCase(); document.getElementById('roomChatMessages').innerHTML = ''; }
 window.toggleRoomChat = function() { roomChatMinimized = !roomChatMinimized; document.getElementById('roomChatBody').style.display = roomChatMinimized ? 'none' : 'flex'; document.getElementById('chatMinimizeBtn').innerText = roomChatMinimized ? '□' : '_'; document.getElementById('room-chat-sidebar').style.height = roomChatMinimized ? 'auto' : '380px'; }
@@ -261,15 +330,11 @@ window.sendRoomMessage = function() { const input = document.getElementById('roo
 // --- FIREWORKS SYSTEM ---
 function generateFireworks() {
     const container = document.getElementById('fireworks-container');
-    if(!container) return;
-    container.innerHTML = '';
+    if(!container) return; container.innerHTML = '';
     for(let i=0; i<40; i++) {
-        let p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = (Math.random() * 100) + '%';
+        let p = document.createElement('div'); p.className = 'particle'; p.style.left = (Math.random() * 100) + '%';
         p.style.backgroundColor = ['#ff3366', '#33b5e5', '#ffd700', '#00ff00'][Math.floor(Math.random()*4)];
-        p.style.animationDuration = (Math.random() * 1 + 1) + 's';
-        p.style.animationDelay = (Math.random() * 0.5) + 's';
+        p.style.animationDuration = (Math.random() * 1 + 1) + 's'; p.style.animationDelay = (Math.random() * 0.5) + 's';
         container.appendChild(p);
     }
 }
@@ -304,12 +369,9 @@ function syncShooterFirebase() {
     
     db.ref("rooms/"+currentRoomCode+"/shooterState").on("value", snap => { 
         if(snap.exists() && shooterActive) { 
-            let d = snap.val(); 
-            remoteShooters = {}; 
+            let d = snap.val(); remoteShooters = {}; 
             for(let p in d) { if(p !== botNames.p1) remoteShooters[p] = d[p]; } 
-        } else {
-            remoteShooters = {};
-        }
+        } else { remoteShooters = {}; }
     });
     
     db.ref("rooms/"+currentRoomCode+"/bullets").on("child_added", snap => { let b = snap.val(); if(b.owner !== botNames.p1) sBullets.push(b); });
@@ -322,9 +384,7 @@ function syncShooterFirebase() {
             for(let i=0; i<Math.min(5, sorted.length); i++) {
                 html += `<div class="leaderboard-item"><span>${i+1}. ${sorted[i]}</span><span>${shooterKills[sorted[i]]} Kills</span></div>`;
                 if (shooterKills[sorted[i]] >= 15) {
-                    shooterActive = false;
-                    alert(`${sorted[i]} WINS THE MATCH!`);
-                    quitToLobby();
+                    shooterActive = false; alert(`${sorted[i]} WINS THE MATCH!`); quitToLobby();
                 }
             }
             document.getElementById('shooterLeaderboard').innerHTML = html;
@@ -393,20 +453,14 @@ const crushGems = ['gem-red', 'gem-orange', 'gem-yellow', 'gem-green', 'gem-blue
 let crushWidth = 8; let crushGrid = []; let crushScore = 0; let crushLevel = 1; let crushMoves = 30; let iceBlocks = []; let draggedCandy, replacedCandy; let crushInterval;
 
 const crushLevelData = [
-    { target: 300, moves: 15, ice: [] },
-    { target: 800, moves: 20, ice: [] },
-    { target: 1500, moves: 25, ice: [27,28,35,36, 18, 21, 42, 45] } 
+    { target: 300, moves: 15, ice: [] }, { target: 800, moves: 20, ice: [] }, { target: 1500, moves: 25, ice: [27,28,35,36, 18, 21, 42, 45] } 
 ];
 
 function initCrush() { 
     const board = document.getElementById('crushBoard'); board.innerHTML = ''; crushGrid = []; crushScore = 0; document.getElementById('crushScore').innerText = crushScore; document.getElementById('crushLevelText').innerText = crushLevel; 
-    let lvlData = crushLevelData[Math.min(crushLevel - 1, 2)];
-    crushMoves = lvlData.moves;
-    document.getElementById('crushObjectiveDisplay').innerText = `Objective: Reach ${lvlData.target} pts!`;
-    document.getElementById('crushMovesText').innerText = crushMoves; 
+    let lvlData = crushLevelData[Math.min(crushLevel - 1, 2)]; crushMoves = lvlData.moves; document.getElementById('crushObjectiveDisplay').innerText = `Objective: Reach ${lvlData.target} pts!`; document.getElementById('crushMovesText').innerText = crushMoves; 
     
-    iceBlocks = Array(64).fill(false);
-    lvlData.ice.forEach(idx => iceBlocks[idx] = true);
+    iceBlocks = Array(64).fill(false); lvlData.ice.forEach(idx => iceBlocks[idx] = true);
 
     for (let i = 0; i < 64; i++) { 
         const candy = document.createElement('div'); candy.className = 'candy'; candy.setAttribute('draggable', true); candy.setAttribute('id', i); 
@@ -442,8 +496,7 @@ function dragEnd() {
 }
 
 function triggerCrushAnim(indexes, createBombIndex = -1) { 
-    let brokeIce = false;
-    let fullClearList = new Set(indexes);
+    let brokeIce = false; let fullClearList = new Set(indexes);
 
     indexes.forEach(idx => {
         if(crushGrid[idx].classList.contains('power-bomb') && idx !== createBombIndex) {
@@ -453,20 +506,14 @@ function triggerCrushAnim(indexes, createBombIndex = -1) {
     });
 
     fullClearList.forEach(index => { 
-        if(index === createBombIndex) {
-            crushGrid[index].classList.add('power-bomb');
-            crushScore += 20; return; 
-        }
-
-        crushGrid[index].classList.add('crush-anim'); 
-        crushGrid[index].classList.remove('power-bomb');
+        if(index === createBombIndex) { crushGrid[index].classList.add('power-bomb'); crushScore += 20; return; }
+        crushGrid[index].classList.add('crush-anim'); crushGrid[index].classList.remove('power-bomb');
         
         let adj = [index-1, index+1, index-8, index+8];
         adj.forEach(a => {
             if(a>=0 && a<64 && iceBlocks[a] && Math.abs((a%8) - (index%8)) <= 1) {
                 iceBlocks[a] = false; crushGrid[a].classList.remove('ice'); crushGrid[a].classList.add('crush-anim');
-                setTimeout(() => crushGrid[a].classList.remove('crush-anim'), 300);
-                crushScore += 50; brokeIce = true;
+                setTimeout(() => crushGrid[a].classList.remove('crush-anim'), 300); crushScore += 50; brokeIce = true;
             }
         });
         setTimeout(() => { let cls = getGemClass(crushGrid[index]); if(cls) crushGrid[index].classList.remove(cls); crushGrid[index].classList.remove('crush-anim'); }, 300); 
@@ -477,8 +524,7 @@ function triggerCrushAnim(indexes, createBombIndex = -1) {
 function checkRowForThree() { 
     for (let i = 0; i < 64; i++) { 
         if(i%8 > 5) continue; 
-        let rowOfThree = [i, i + 1, i + 2]; 
-        let decidedClass = getGemClass(crushGrid[i]); 
+        let rowOfThree = [i, i + 1, i + 2]; let decidedClass = getGemClass(crushGrid[i]); 
         
         if (decidedClass && !crushGrid[i].classList.contains('ice') && rowOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { 
             let matchLength = 3; let matchIndexes = [...rowOfThree];
@@ -493,8 +539,7 @@ function checkRowForThree() {
 
 function checkColumnForThree() { 
     for (let i = 0; i < 48; i++) { 
-        let columnOfThree = [i, i + 8, i + 16]; 
-        let decidedClass = getGemClass(crushGrid[i]); 
+        let columnOfThree = [i, i + 8, i + 16]; let decidedClass = getGemClass(crushGrid[i]); 
         if (decidedClass && !crushGrid[i].classList.contains('ice') && columnOfThree.every(idx => getGemClass(crushGrid[idx]) === decidedClass && !crushGrid[idx].classList.contains('crush-anim') && !crushGrid[idx].classList.contains('ice'))) { 
             let matchLength = 3; let matchIndexes = [...columnOfThree];
             if(i < 40 && getGemClass(crushGrid[i+24]) === decidedClass && !crushGrid[i+24].classList.contains('ice')) { matchLength = 4; matchIndexes.push(i+24); }
@@ -514,8 +559,7 @@ function checkCrushLevelStatus(target) {
 function moveDown() { 
     for (let i = 0; i < 55; i++) { 
         if (!getGemClass(crushGrid[i + 8]) && !iceBlocks[i + 8]) { 
-            let topClass = getGemClass(crushGrid[i]); 
-            let isBomb = crushGrid[i].classList.contains('power-bomb');
+            let topClass = getGemClass(crushGrid[i]); let isBomb = crushGrid[i].classList.contains('power-bomb');
             if(topClass && !iceBlocks[i]) { 
                 crushGrid[i + 8].classList.add(topClass); crushGrid[i].classList.remove(topClass); 
                 if(isBomb) { crushGrid[i+8].classList.add('power-bomb'); crushGrid[i].classList.remove('power-bomb'); }
@@ -558,13 +602,19 @@ let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '
 
 function syncOmiFromFirebase() {
     if(!isMultiplayer || !currentRoomCode || omiSynced) return; omiSynced = true;
-    db.ref("rooms/" + currentRoomCode + "/nextRound").on("value", snap => { if(snap.exists() && !isHost && document.getElementById('celebration-overlay').style.display === 'flex') { closeCelebrationForce(); } });
+    
+    // ATOMIC ROUND RESET LISTENER
+    db.ref("rooms/" + currentRoomCode + "/nextRound").on("value", snap => { 
+        if(snap.exists() && !isHost && document.getElementById('celebration-overlay').style.display === 'flex') { 
+            closeCelebrationForce(); 
+        } 
+    });
+
     db.ref("rooms/" + currentRoomCode + "/omiDealer").on("value", snap => { if(snap.exists()) { window.currentAbsDealer = snap.val(); roundDealerIndex = (window.currentAbsDealer - myIndex + 4) % 4; trumpCallerId = turnOrder[(roundDealerIndex + 1) % 4]; updateRolesInUI(); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck").on("value", snap => { if(snap.exists() && !isHost) { fullDeck = snap.val(); document.getElementById('gameStatus').innerText = lang[currentLang].statusShuffle; let deckVis = document.getElementById('deck-visual'); deckVis.style.display = 'block'; deckVis.classList.add('shuffling'); setTimeout(() => { deckVis.classList.remove('shuffling'); let cutterId = turnOrder[(roundDealerIndex + 3) % 4]; updateActiveTurnUI(cutterId); if (cutterId === 'p1') { document.getElementById('gameStatus').innerText = lang[currentLang].myCutPrompt; document.getElementById('cut-selector').style.display = 'flex'; document.getElementById('cut-selector').style.justifyContent = 'center'; document.getElementById('cut-selector').style.gap = '10px'; } else { document.getElementById('gameStatus').innerText = isMultiplayer ? `Waiting for ${botNames[cutterId]}...` : botNames[cutterId] + lang[currentLang].statusCut; } }, 1500); } });
     db.ref("rooms/" + currentRoomCode + "/omiDeck2").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 3) % 4] !== 'p1') { fullDeck = snap.val(); executeCutLocal(); } });
     db.ref("rooms/" + currentRoomCode + "/omiTrump").on("value", snap => { if(snap.exists() && turnOrder[(roundDealerIndex + 1) % 4] !== 'p1') setTrumpLocal(snap.val()); });
     
-    // THE PUSH QUEUE FIX FOR SEPORU DESYNC
     db.ref("rooms/" + currentRoomCode + "/omiMoves").on("child_added", snap => { 
         if(snap.exists()) { 
             let move = snap.val(); 
@@ -600,40 +650,40 @@ function triggerCelebration(type, winningTeam, tokensEarned = 0) {
     const winGifs = ["https://media0.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif", "https://media3.giphy.com/media/artj92V8o75VPL7AeQ/giphy.gif"];
     const loseGifs = ["https://media2.giphy.com/media/10tIjpzIu8fe0/giphy.gif", "https://media1.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"];
     
+    let l = lang[currentLang];
+
     if (type === 'round') { 
-        let tokenUnit = currentLang === 'si' ? " කැටකොල)" : " Tokens)"; 
-        title.innerText = isLocalWin ? (currentLang === 'si' ? "වටය දිනුවා!" : "ROUND WON!") : (currentLang === 'si' ? "වටය පරාදයි..." : "ROUND LOST...");
+        title.innerText = isLocalWin ? l.winMsg : l.loseMsg;
         title.style.color = isLocalWin ? "#ffd700" : "#ff3366";
-        subtitle.innerText = teamNameStr + lang[currentLang].celebWinRnd + tokensEarned + tokenUnit; 
-        btn.innerText = lang[currentLang].btnCont; 
+        subtitle.innerText = isLocalWin ? l.winSub.replace("[X]", tokensEarned) : l.loseSub.replace("[X]", tokensEarned); 
+        btn.innerText = l.btnCont; 
         gif.src = isLocalWin ? winGifs[Math.floor(Math.random() * winGifs.length)] : loseGifs[Math.floor(Math.random() * loseGifs.length)]; 
     } 
     else if (type === 'game') { 
         title.innerText = isLocalWin ? (currentLang === 'si' ? "විශිෂ්ට ජයග්‍රහණයක්!" : "VICTORY!") : (currentLang === 'si' ? "පරාජයක්!" : "DEFEAT!");
         title.style.color = isLocalWin ? "#ffd700" : "#ff3366";
-        subtitle.innerText = lang[currentLang].celebWinGame + teamNameStr + "!"; 
-        btn.innerText = lang[currentLang].btnAgain; 
+        subtitle.innerText = l.celebWinGame + teamNameStr + "!"; 
+        btn.innerText = l.btnAgain; 
         gif.src = isLocalWin ? "https://media2.giphy.com/media/cnuNz0fTBIUGnx4F9T/giphy.gif" : "https://media2.giphy.com/media/l41Ywx8mJg0B8A1A4/giphy.gif"; 
     } 
     else if (type === 'seporu') { 
-        title.innerText = lang[currentLang].celebSeporu; 
-        title.style.color = "#33b5e5";
-        subtitle.innerText = lang[currentLang].celebSeporuSub; 
-        btn.innerText = lang[currentLang].btnCont; 
+        title.innerText = l.celebSeporu; title.style.color = "#33b5e5";
+        subtitle.innerText = l.celebSeporuSub; btn.innerText = l.btnCont; 
         gif.src = "https://media3.giphy.com/media/l36kU80xPf0ojG0Erg/giphy.gif"; 
     } 
     else if (type === 'double_seporu') { 
-        title.innerText = lang[currentLang].celebDblSeporu; 
-        title.style.color = "#ff8800";
-        subtitle.innerText = lang[currentLang].celebDblSeporuSub; 
-        btn.innerText = lang[currentLang].btnCont; 
+        title.innerText = l.celebDblSeporu; title.style.color = "#ff8800";
+        subtitle.innerText = l.celebDblSeporuSub; btn.innerText = l.btnCont; 
         gif.src = "https://media1.giphy.com/media/xT5LMz1W4oFAycE5vq/giphy.gif"; 
     } 
 
     if(isMultiplayer && !isGameOver) {
         document.getElementById('celeb-btn').style.display = 'none'; 
-        if(isHost) document.getElementById('btnHostNextRound').style.display = 'block';
-        else subtitle.innerHTML += "<br><br><span style='color:#33b5e5; font-size:0.9rem;'>Waiting for Host to start next round...</span>";
+        if(isHost) {
+            document.getElementById('btnHostNextRound').style.display = 'block';
+        } else {
+            subtitle.innerHTML += "<br><br><span style='color:#33b5e5; font-size:0.9rem;'>" + (currentLang==='si'?"Host ඊළඟ වටය ආරම්භ කරන තෙක් රැඳී සිටින්න...":"Waiting for Host to start next round...") + "</span>";
+        }
     } else {
         document.getElementById('celeb-btn').style.display = 'block';
         document.getElementById('btnHostNextRound').style.display = 'none';
@@ -723,8 +773,6 @@ function evaluateTrickWinner() {
 }
 function evaluateMatchPoints() {
     let roundWinner = 0; let earnedTokens = 0; let isSeporu = false; let isDoubleSeporu = false;
-    
-    // OFFICIAL OMI SCORING LOGIC
     let callerRelativeId = trumpCallerId; 
     let callerTeam = (callerRelativeId === 'p1' || callerRelativeId === 'p3') ? 1 : 2;
 
