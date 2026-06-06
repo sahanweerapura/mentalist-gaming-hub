@@ -86,15 +86,28 @@ function toggleLanguage() {
     document.getElementById('txtRoomChatTitle').innerText = l.txtRoomChatTitle; document.getElementById('roomChatInput').placeholder = l.roomChatPH; document.getElementById('btnRoomSendChat').innerText = l.btnSendChat;
     document.getElementById('txtPublicRooms').innerText = l.txtPublicRooms;
     
-    document.getElementById('t1Label').innerText = l.t1Label; document.getElementById('t2Label').innerText = l.t2Label; 
-    document.getElementById('lblPart').innerText = l.lblPart; document.getElementById('lblT1').innerText = l.lblPart; 
-    document.getElementById('lblT2A').innerText = l.lblT2; document.getElementById('lblT2B').innerText = l.lblT2; 
+    // DYNAMIC TEAM LABELS BASED ON LOBBY INDEX
+    updateTeamLabels();
 
     ['txtKata1', 'txtKata2'].forEach(id => document.getElementById(id).innerText = l.txtKata); 
     ['txtKola1', 'txtKola2'].forEach(id => document.getElementById(id).innerText = l.txtKola); 
     document.getElementById('txtTrumpBadge').innerText = l.txtTrumpBadge; document.getElementById('btnCut').innerText = l.btnCut; document.getElementById('btnDecline').innerText = l.btnDecline; document.getElementById('trumpTitle').innerText = l.trumpTitle; document.getElementById('txtCrushScore').innerText = l.txtCrushScore; document.getElementById('txtCrushMoves').innerText = l.txtCrushMoves; document.getElementById('txtCrushLvl').innerText = l.txtCrushLvl;
     updateRolesInUI(); 
     if(tttActive) { let mySymbol = isHost ? "X" : "O"; document.getElementById('tttStatus').innerText = board.includes("X") || board.includes("O") ? (tttPlayerTurn ? (currentLang==='si'?`ඔබේ වාරය! (${mySymbol})`:`Your Turn! (${mySymbol})`) : (currentLang==='si'?"ප්‍රතිවාදියාගේ වාරය...":"Waiting for Opponent...")) : l.tttYourTurn; }
+}
+
+function updateTeamLabels() {
+    let myTeamLetter = (myIndex === 0 || myIndex === 2) ? "A" : "B";
+    let oppTeamLetter = (myIndex === 0 || myIndex === 2) ? "B" : "A";
+    
+    document.getElementById('t1Label').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "TEAM ") + myTeamLetter;
+    document.getElementById('t2Label').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "TEAM ") + oppTeamLetter;
+    
+    document.getElementById('lblPart').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "Team ") + myTeamLetter;
+    document.getElementById('lblT1').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "Team ") + myTeamLetter;
+    
+    document.getElementById('lblT2A').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "Team ") + oppTeamLetter;
+    document.getElementById('lblT2B').innerText = (currentLang === 'si' ? "කණ්ඩායම " : "Team ") + oppTeamLetter;
 }
 
 document.getElementById('playerForm').addEventListener('submit', function(e) { e.preventDefault(); let alias = document.getElementById('playerName').value; let email = document.getElementById('playerEmail').value; let phone = document.getElementById('playerPhone').value; userProfile.alias = alias; userProfile.email = email; userProfile.phone = phone; saveProfile(); loginUser(alias, email, phone); });
@@ -156,7 +169,7 @@ window.launchGame = function(mode) {
     isMultiplayer = (mode === 'multi'); document.getElementById('mode-modal').style.display = 'none';
     if (mode === 'crush') { document.getElementById('lobby-screen').style.display = 'none'; document.getElementById('crush-screen').style.display = 'block'; initCrush(); return; }
     if (isMultiplayer) { document.getElementById('room-modal').style.display = 'flex'; return; }
-    document.getElementById('lobby-screen').style.display = 'none'; mySeat = 'p1'; myIndex = 0; 
+    document.getElementById('lobby-screen').style.display = 'none'; mySeat = 'p1'; myIndex = 0; updateTeamLabels();
     if (selectedGame === 'omi') { document.getElementById('game-screen').style.display = 'block'; startLifecycle(); } 
     else if (selectedGame === 'ttt') { document.getElementById('ttt-screen').style.display = 'block'; initTTT(); }
     else if (selectedGame === 'shooter') { document.getElementById('shooter-screen').style.display = 'block'; initShooter(); }
@@ -167,7 +180,6 @@ window.createRoom = function() {
     let code = Math.random().toString(36).substring(2, 8).toUpperCase(); currentRoomCode = code; isHost = true;
     let isPrivate = document.getElementById('isPrivateRoom').checked;
     
-    // Fixed Size Array to map positions
     let pArr = Array(currentLobbyMax).fill(""); pArr[0] = botNames.p1;
     
     db.ref("rooms/" + code).set({ game: selectedGame, host: botNames.p1, maxPlayers: currentLobbyMax, players: pArr, status: "waiting", chat: [], isPrivate: isPrivate });
@@ -209,7 +221,7 @@ window.joinTeam = function(team) {
         if(snap.exists()) {
             let pArr = snap.val(); let oldIdx = pArr.indexOf(botNames.p1);
             let targetIndices = (team === 'A') ? [0, 2] : [1, 3];
-            if(targetIndices.includes(oldIdx)) return; // Already there
+            if(targetIndices.includes(oldIdx)) return; 
             
             let emptyIdx = targetIndices.find(i => pArr[i] === "" || pArr[i] === undefined);
             if(emptyIdx !== undefined) {
@@ -230,6 +242,8 @@ function listenToFirebaseRoom(code) {
         let actualPlayers = pArr.filter(x => x !== "");
         document.getElementById('queueCount').innerText = actualPlayers.length;
         myIndex = pArr.indexOf(botNames.p1);
+        
+        updateTeamLabels();
 
         // OMI TEAM SELECTION UI
         if(selectedGame === 'omi') {
@@ -253,7 +267,6 @@ function listenToFirebaseRoom(code) {
                 document.getElementById('p2-name').innerText = botNames.p2;
             }
         } else {
-            // Standard List UI
             document.getElementById('teamSelection').style.display = 'none';
             document.getElementById('standardQueue').style.display = 'block';
             const qList = document.getElementById('waitingPlayerList'); qList.innerHTML = '';
@@ -598,7 +611,7 @@ function checkTTTWin() { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[
 
 // --- OMI GAME ENGINE WITH MANUAL HOST SYNC & PUSH QUEUE ---
 const suits = ['♠', '♥', '♣', '♦']; const values = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']; const cardPower = { '7':7, '8':8, '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14 }; const turnOrder = ['p1', 'p4', 'p3', 'p2']; const botNames = { p1: "You", p2: "Bot 2", p3: "Bot 3", p4: "Bot 4" }; 
-let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '', currentTrick = [], ledSuit = ''; let roundDealerIndex = 0, currentTurnIndex = 0; let team1Tricks = 0, team2Tricks = 0, team1Kola = 0, team2Kola = 0, trumpCallerId = ''; let activeSeporu = 0; let omiSynced = false;
+let fullDeck = [], hands = { p1: [], p2: [], p3: [], p4: [] }; let trumpSuit = '', currentTrick = [], ledSuit = ''; let roundDealerIndex = 0, currentTurnIndex = 0; let team1Tricks = 0, team2Tricks = 0, team1Kola = 0, team2Kola = 0, trumpCallerId = ''; let activeSeporu = 0; let omiSynced = false; let omiPhase = 0;
 
 function syncOmiFromFirebase() {
     if(!isMultiplayer || !currentRoomCode || omiSynced) return; omiSynced = true;
@@ -622,12 +635,10 @@ function syncOmiFromFirebase() {
                 let localId = turnOrder[(4 + move.firebaseIdx - myIndex) % 4]; 
                 let h = hands[localId]; if (!h) return; 
                 let cIdx = h.findIndex(c => c.suit === move.card.suit && c.value === move.card.value); 
-                if(cIdx > -1) { 
-                    let playedCard = h.splice(cIdx, 1)[0]; 
-                    executePlacement(localId, playedCard); 
-                    currentTurnIndex = (currentTurnIndex + 1) % 4; 
-                    playNextTurn(); 
-                } 
+                let playedCard = (cIdx > -1) ? h.splice(cIdx, 1)[0] : move.card; // Anti-Freeze Guard
+                executePlacement(localId, playedCard); 
+                currentTurnIndex = (currentTurnIndex + 1) % 4; 
+                playNextTurn(); 
             } 
         } 
     });
@@ -711,6 +722,7 @@ function closeCelebrationForce() {
 function updateRolesInUI() { ['p1', 'p2', 'p3', 'p4'].forEach(p => document.getElementById(`role-${p}`).innerText = ""); document.getElementById(`role-${turnOrder[roundDealerIndex]}`).innerText = lang[currentLang].roleDealer; }
 
 function startLifecycle() {
+    omiPhase = 0;
     team1Tricks = 0; team2Tricks = 0; hands = { p1: [], p2: [], p3: [], p4: [] }; document.getElementById('t1-pile').innerHTML = ''; document.getElementById('t2-pile').innerHTML = ''; document.getElementById('trump-display-board').style.display = 'none'; updateScoresUI(); document.getElementById('my-hand').innerHTML = ''; updateActiveTurnUI(null);
     if (!isMultiplayer) {
         if(window.soloDealerIndex === undefined) window.soloDealerIndex = Math.floor(Math.random() * 4); roundDealerIndex = window.soloDealerIndex;
@@ -731,6 +743,7 @@ function startLifecycle() {
 }
 window.executeCut = function(didCut) { document.getElementById('cut-selector').style.display = 'none'; if(didCut) fullDeck.sort(() => Math.random() - 0.5); if(isMultiplayer) db.ref("rooms/" + currentRoomCode + "/omiDeck2").set(fullDeck); executeCutLocal(); };
 function executeCutLocal() {
+    if(omiPhase !== 0) return; omiPhase = 1;
     document.getElementById('gameStatus').innerText = lang[currentLang].statusDeal; updateActiveTurnUI(null);
     let h0 = fullDeck.splice(0, 4); let h1 = fullDeck.splice(0, 4); let h2 = fullDeck.splice(0, 4); let h3 = fullDeck.splice(0, 4);
     if(isMultiplayer) { let dm = [h0, h1, h2, h3]; hands.p1 = hands.p1.concat(dm[myIndex]); hands.p4 = hands.p4.concat(dm[(myIndex+1)%4]); hands.p3 = hands.p3.concat(dm[(myIndex+2)%4]); hands.p2 = hands.p2.concat(dm[(myIndex+3)%4]); } else { hands.p1 = hands.p1.concat(h0); hands.p2 = hands.p2.concat(h1); hands.p3 = hands.p3.concat(h2); hands.p4 = hands.p4.concat(h3); }
@@ -738,6 +751,7 @@ function executeCutLocal() {
 }
 window.setTrump = function(suit) { if(isMultiplayer) db.ref("rooms/" + currentRoomCode + "/omiTrump").set(suit); setTrumpLocal(suit); };
 function setTrumpLocal(suit) {
+    if(omiPhase !== 1) return; omiPhase = 2;
     trumpSuit = suit; document.getElementById('trump-selector').style.display = 'none'; document.getElementById('gameStatus').innerText = lang[currentLang].statusDeal2; document.getElementById('deck-visual').style.display = 'none'; updateActiveTurnUI(null); const trumpIcon = document.getElementById('current-trump-icon'); trumpIcon.innerText = suit; trumpIcon.className = 'suit-badge ' + ((suit === '♥' || suit === '♦') ? 'red' : 'black'); document.getElementById('trump-display-board').style.display = 'flex';
     let h0 = fullDeck.splice(0, 4); let h1 = fullDeck.splice(0, 4); let h2 = fullDeck.splice(0, 4); let h3 = fullDeck.splice(0, 4);
     if(isMultiplayer) { let dm = [h0, h1, h2, h3]; hands.p1 = hands.p1.concat(dm[myIndex]); hands.p4 = hands.p4.concat(dm[(myIndex+1)%4]); hands.p3 = hands.p3.concat(dm[(myIndex+2)%4]); hands.p2 = hands.p2.concat(dm[(myIndex+3)%4]); } else { hands.p1 = hands.p1.concat(h0); hands.p2 = hands.p2.concat(h1); hands.p3 = hands.p3.concat(h2); hands.p4 = hands.p4.concat(h3); }
@@ -793,6 +807,6 @@ function evaluateMatchPoints() {
     updateScoresUI();
     if (team1Kola >= 10 || team2Kola >= 10) { isGameOver = true; if (team1Kola >= 10) addGlobalPoints(50); triggerCelebration('game', team1Kola >= 10 ? 1 : 2); } else if (isDoubleSeporu) { triggerCelebration('double_seporu', 0); } else if (isSeporu) { triggerCelebration('seporu', 0); } else { triggerCelebration('round', roundWinner, earnedTokens); }
 }
-function updateScoresUI() { document.getElementById('t1-tricks').innerText = team1Tricks; document.getElementById('t2-tricks').innerText = team2Tricks; document.getElementById('t1-kola').innerText = team1Kola; document.getElementById('t2-kola').innerText = team2Kola; document.getElementById('t1-left').innerText = Math.max(0, 10 - team1Kola); document.getElementById('t2-left').innerText = Math.max(0, 10 - team2Kola); }
+function updateScoresUI() { document.getElementById('t1-tricks').innerText = team1Tricks; document.getElementById('t2-tricks').innerText = team2Tricks; document.getElementById('t1-kola').innerText = team1Kola; document.getElementById('t2-kola').innerText = team2Kola; document.getElementById('t1-left').innerText = Math.max(0, 10 - team1Kola); document.getElementById('t2-left').innerText = Math.max(0, 10 - team2Kola); updateTeamLabels(); }
 
 initApp();
